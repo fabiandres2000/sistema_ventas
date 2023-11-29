@@ -81,6 +81,7 @@ class VentasController extends Controller
             ->select("ventas.*", DB::raw("sum(productos_vendidos.cantidad * productos_vendidos.precio) as total"))
             ->groupBy("ventas.id", "ventas.created_at", "ventas.updated_at", "ventas.id_cliente")
             ->get();
+            
         return view("ventas.ventas_index", ["ventas" => $ventasConTotales,]);
     }
 

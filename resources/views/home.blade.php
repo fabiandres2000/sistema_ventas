@@ -2,13 +2,12 @@
 @section("titulo", "Inicio")
 @section('contenido')
     @foreach([
-    ["productos", "ventas", "vender", "clientes"],
-    ["usuarios", "acerca_de", "soporte"]
+    ["productos", "ventas", "vender", "clientes", "usuarios"],
     ] as $modulos)
         <div class="col-12 pb-2">
             <div class="row">
                 @foreach($modulos as $modulo)
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-4" style="margin-top: 20px">
                         <div class="card" style="align-items: center;">
                             <img style="height: 129px; width: fit-content; padding: 15px" class="card-img-top" src="{{url("/img/$modulo.png")}}">
                             <div class="card-body">
