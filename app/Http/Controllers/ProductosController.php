@@ -98,8 +98,7 @@ class ProductosController extends Controller
      */
     public function edit(Producto $producto)
     {
-        return view("productos.productos_edit", ["producto" => $producto,
-        ]);
+        return view("productos.productos_edit", ["producto" => $producto]);
     }
 
     /**

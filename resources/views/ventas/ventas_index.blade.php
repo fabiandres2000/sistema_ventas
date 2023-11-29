@@ -30,7 +30,6 @@
                     <thead>
                     <tr>
                         <th>Fecha</th>
-                        <th>Cliente</th>
                         <th>Total</th>
                         <th>Ticket de venta</th>
                         <th>Detalles</th>
@@ -41,7 +40,6 @@
                     @foreach($ventas as $venta)
                         <tr>
                             <td>{{$venta->created_at}}</td>
-                            <td>{{$venta->cliente->nombre}}</td>
                             <td>${{number_format($venta->total, 2)}}</td>
                             <td>
                                 <a class="btn btn-info" href="{{route("ventas.ticket", ["id"=>$venta->id])}}">
