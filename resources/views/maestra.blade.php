@@ -11,10 +11,12 @@
     <link href="{{url("/css/jquery.dataTables.min.css")}}" rel="stylesheet">
     <script src="{{url("/js/jquery-3.7.0.js")}}"></script>
     <script src="{{url("/js/jquery.dataTables.min.js")}}"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <style>
         body {
-            padding-top: 70px;
-            padding-bottom: 70px;
+            padding-top: 57px;
         }
 
         .imagen_producto {
@@ -29,6 +31,87 @@
             border-radius: 20px;
             margin-top: 30px;
             cursor: pointer;
+        }
+
+        input[type="radio"] {
+            display: none;
+            &:not(:disabled) ~ label {
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+            }
+            &:disabled ~ label {
+                color: hsla(150, 5%, 75%, 1);
+                border-color: hsla(150, 5%, 75%, 1);
+                box-shadow: none;
+                cursor: not-allowed;
+            }
+        }
+
+        input[type="checkbox"] {
+            display: none;
+            &:not(:disabled) ~ label {
+                cursor: pointer;
+            }
+            &:disabled ~ label {
+                color: hsla(150, 5%, 75%, 1);
+                border-color: hsla(150, 5%, 75%, 1);
+                box-shadow: none;
+                cursor: not-allowed;
+            }
+        }
+
+        label.lradio {
+            height: 100%;
+            display: block;
+            background: white;
+            border: 2px solid hsla(150, 75%, 50%, 1);
+            border-radius: 20px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            box-shadow: 0px 3px 10px -2px hsla(150, 5%, 65%, 0.5);
+            position: relative;
+            padding-top: 19px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lradio p {
+            margin-bottom: 0px !important;
+        }
+
+        input[type="radio"]:checked + label {
+            background: hsla(150, 75%, 50%, 1);
+            color: hsla(215, 0%, 100%, 1);
+            box-shadow: 0px 0px 20px hsla(150, 100%, 50%, 0.75);
+        }
+
+        input[type="checkbox"]:checked + label {
+            background: hsla(150, 75%, 50%, 1);
+            color: hsla(215, 0%, 100%, 1);
+            box-shadow: 0px 0px 20px hsla(150, 100%, 50%, 0.75);
+            &::after {
+                color: hsla(215, 5%, 25%, 1);
+                font-family: FontAwesome;
+                border: 2px solid hsla(150, 75%, 45%, 1);
+                content: "\f00c";
+                font-size: 24px;
+                position: absolute;
+                top: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 50px;
+                width: 50px;
+                line-height: 50px;
+                text-align: center;
+                border-radius: 50%;
+                background: white;
+                box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+            }
         }
     </style>
 </head>

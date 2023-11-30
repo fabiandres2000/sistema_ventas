@@ -1,6 +1,7 @@
 @extends("maestra")
 @section("titulo", "Realizar venta")
 @section("contenido")
+<br>
     <div class="row">
         <div class="col-12">
             <h1>Nueva venta <i class="fa fa-cart-plus"></i></h1>
@@ -34,7 +35,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-6"></div>
+                <div class="col-md-2" style="display: flex;justify-content: start;align-items: flex-end;">
+                    <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success">Buscar Manualmente</button>
+                </div>
             </div>
             
             <hr>
@@ -80,4 +83,72 @@
             @endif
         </div>
     </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Selecciona una categoria</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-4" style="margin-bottom: 20px">
+                        <input required type="radio" id="control_01" name="categoria" value="Aseo" >
+                        <label onclick="elegirCategoria('Aseo')" class="lradio" for="control_01">
+                            <img src="/img/aseo.png" style="width: 50px" alt="">
+                            <p>Aseo</p>
+                        </label>
+                    </div>
+                    <div class="col-lg-4" style="margin-bottom: 20px">
+                        <input required type="radio" id="control_02" name="categoria" value="Alimentos">
+                        <label class="lradio" for="control_02">
+                            <img src="/img/alimentos.png" style="width: 50px" alt="">
+                            <p>Alimentos</p>
+                        </label>
+                    </div>
+                    <div class="col-lg-4" style="margin-bottom: 20px">
+                        <input required type="radio" id="control_03" name="categoria" value="Bebidas">
+                        <label class="lradio" for="control_03">
+                            <img src="/img/bebidas.png" style="width: 50px" alt="">
+                            <p>Bebidas</p>
+                        </label>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4" style="margin-bottom: 20px">
+                        <input required type="radio" id="control_05" name="categoria" value="Carnes">
+                        <label class="lradio" for="control_05">
+                            <img src="/img/carne.png" style="width: 50px" alt="">
+                            <p>Carnes</p>
+                        </label>
+                    </div>
+                    <div class="col-lg-4" style="margin-bottom: 20px">
+                        <input required type="radio" id="control_07" name="categoria" value="Farmacia">
+                        <label class="lradio" for="control_07">
+                            <img src="/img/farmacia.png" style="width: 50px" alt="">
+                            <p>Farmacia</p>
+                        </label>
+                    </div>
+                    <div class="col-lg-4" style="margin-bottom: 20px">
+                        <input required type="radio" id="control_06" name="categoria" value="Otros">
+                        <label class="lradio" for="control_06">
+                            <p>Otros</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <script>
+        function elegirCategoria(valor){
+            $('#exampleModal').modal("hide")
+        }
+    </script>
 @endsection

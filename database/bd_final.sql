@@ -1,6 +1,6 @@
 /*
-SQLyog Community v13.2.0 (64 bit)
-MySQL - 8.0.30 : Database - punto_venta
+SQLyog Community v13.1.7 (64 bit)
+MySQL - 8.0.35 : Database - punto_venta
 *********************************************************************
 */
 
@@ -12,6 +12,10 @@ MySQL - 8.0.30 : Database - punto_venta
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`punto_venta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `punto_venta`;
+
 /*Table structure for table `clientes` */
 
 DROP TABLE IF EXISTS `clientes`;
@@ -181,6 +185,7 @@ CREATE TABLE `productos` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `codigo_barras` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `categoria` text COLLATE utf8mb4_unicode_ci,
   `precio_compra` decimal(9,2) NOT NULL,
   `precio_venta` decimal(9,2) NOT NULL,
   `existencia` decimal(9,2) NOT NULL,
@@ -188,13 +193,20 @@ CREATE TABLE `productos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `productos` */
 
-insert  into `productos`(`id`,`codigo_barras`,`descripcion`,`precio_compra`,`precio_venta`,`existencia`,`imagen`,`created_at`,`updated_at`) values 
-(7,'3213213213','papa sin lavar',1000.00,1200.00,18.00,'1701285670.jpg','2023-11-29 13:21:10','2023-11-29 14:45:52'),
-(8,'523234234','mayonesa en pote',5000.00,5600.00,10.00,'1701285940.jpg','2023-11-29 13:25:40','2023-11-29 14:45:52');
+insert  into `productos`(`id`,`codigo_barras`,`descripcion`,`categoria`,`precio_compra`,`precio_venta`,`existencia`,`imagen`,`created_at`,`updated_at`) values 
+(10,'no','papa sin lavar','Alimentos',1000.00,1200.00,20.00,'1701299580.jpg','2023-11-29 17:13:00','2023-11-29 17:13:00'),
+(12,'435345345','mayonesa fruco','Alimentos',1000.00,1200.00,5.00,'1701299800.jpg','2023-11-29 17:16:40','2023-11-29 17:16:40'),
+(13,'7657567567','salsa de tomate fruco','Alimentos',1000.00,1200.00,15.00,'1701299828.jpg','2023-11-29 17:17:08','2023-11-29 17:17:08'),
+(14,'7657567568','limpido','Aseo',3000.00,3800.00,20.00,'1701300016.jpg','2023-11-29 17:20:16','2023-11-29 17:26:40'),
+(15,'7867865345','trapero','Aseo',2000.00,2900.00,10.00,'1701300701.jpg','2023-11-29 17:31:41','2023-11-29 17:31:41'),
+(16,'8678768678678','escoba de piso','Aseo',4000.00,5000.00,15.00,'1701300744.jpg','2023-11-29 17:32:24','2023-11-29 17:32:24'),
+(17,'979876896','postobon personal','Bebidas',1800.00,2500.00,15.00,'1701300797.jpg','2023-11-29 17:33:17','2023-11-29 17:33:17'),
+(18,'345345345','coca cola personal','Bebidas',1800.00,2600.00,20.00,'1701300847.jpg','2023-11-29 17:34:07','2023-11-29 17:34:07'),
+(19,'6567657567','soda','Bebidas',1200.00,1500.00,10.00,'1701301537.jpg','2023-11-29 17:45:37','2023-11-29 17:45:37');
 
 /*Table structure for table `productos_vendidos` */
 
@@ -212,14 +224,9 @@ CREATE TABLE `productos_vendidos` (
   PRIMARY KEY (`id`),
   KEY `productos_vendidos_id_venta_foreign` (`id_venta`),
   CONSTRAINT `productos_vendidos_id_venta_foreign` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `productos_vendidos` */
-
-insert  into `productos_vendidos`(`id`,`id_venta`,`descripcion`,`codigo_barras`,`precio`,`cantidad`,`created_at`,`updated_at`) values 
-(1,2,'papa sin lavar','3213213213',1200.00,1.00,'2023-11-29 14:30:24','2023-11-29 14:30:24'),
-(2,3,'papa sin lavar','3213213213',1200.00,1.00,'2023-11-29 14:45:52','2023-11-29 14:45:52'),
-(3,3,'mayonesa en pote','523234234',5600.00,2.00,'2023-11-29 14:45:52','2023-11-29 14:45:52');
 
 /*Table structure for table `users` */
 
@@ -254,13 +261,9 @@ CREATE TABLE `ventas` (
   `id_cliente` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ventas_id_cliente_foreign` (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `ventas` */
-
-insert  into `ventas`(`id`,`created_at`,`updated_at`,`id_cliente`) values 
-(2,'2023-11-29 14:30:24','2023-11-29 14:30:24',1),
-(3,'2023-11-29 14:45:52','2023-11-29 14:45:52',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -9,7 +9,7 @@
                 @foreach($modulos as $modulo)
                     <div class="col-12 col-md-4" style="margin-top: 20px">
                         <div class="card" style="align-items: center;">
-                            <img style="height: 129px; width: fit-content; padding: 15px" class="card-img-top" src="{{url("/img/$modulo.png")}}">
+                            <img style="height: 120px; width: fit-content; padding: 15px" class="card-img-top" src="{{url("/img/$modulo.png")}}">
                             <div class="card-body">
                                 <h5 class="card-title text-center">
                                     {{$modulo === "acerca_de" ? "Acerca de" : ucwords($modulo)}}
