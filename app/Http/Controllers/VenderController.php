@@ -96,18 +96,19 @@ class VenderController extends Controller
     public function agregarProductoVenta(Request $request)
     {
         $codigo = $request->post("codigo");
+        $cantidad = $request->post("cantidad");
         $producto = Producto::where("codigo_barras", "=", $codigo)->first();
         if (!$producto) {
             return redirect()
                 ->route("vender.index")
                 ->with("mensaje", "Producto no encontrado");
         }
-        $this->agregarProductoACarrito($producto);
+        $this->agregarProductoACarrito($producto, $cantidad);
         return redirect()
             ->route("vender.index");
     }
 
-    private function agregarProductoACarrito($producto)
+    private function agregarProductoACarrito($producto, $cantidad)
     {
         if ($producto->existencia <= 0) {
             return redirect()->route("vender.index")
@@ -120,17 +121,17 @@ class VenderController extends Controller
         $posibleIndice = $this->buscarIndiceDeProducto($producto->codigo_barras, $productos);
         // Es decir, producto no fue encontrado
         if ($posibleIndice === -1) {
-            $producto->cantidad = 1;
+            $producto->cantidad = $cantidad;
             array_push($productos, $producto);
         } else {
-            if ($productos[$posibleIndice]->cantidad + 1 > $producto->existencia) {
+            if ($productos[$posibleIndice]->cantidad + $cantidad > $producto->existencia) {
                 return redirect()->route("vender.index")
                     ->with([
                         "mensaje" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
                         "tipo" => "danger"
                     ]);
             }
-            $productos[$posibleIndice]->cantidad++;
+            $productos[$posibleIndice]->cantidad += $cantidad;
         }
         $this->guardarProductos($productos);
     }

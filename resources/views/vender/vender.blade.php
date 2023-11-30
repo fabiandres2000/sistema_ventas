@@ -29,6 +29,7 @@
                         @csrf
                         <div class="">
                             <label for="codigo"><h1>Código de barras</h1></label>
+                            <input type="hidden" name="cantidad" value="1" id="cantidad">
                             <input id="codigo" autocomplete="off" required autofocus name="codigo" type="text"
                                 class="form-control"
                                 placeholder="Código de barras">
@@ -105,14 +106,14 @@
                     </div>
                     <div class="col-lg-4" style="margin-bottom: 20px">
                         <input required type="radio" id="control_02" name="categoria" value="Alimentos">
-                        <label class="lradio" for="control_02">
+                        <label onclick="elegirCategoria('Alimentos')" class="lradio" for="control_02">
                             <img src="/img/alimentos.png" style="width: 50px" alt="">
                             <p>Alimentos</p>
                         </label>
                     </div>
                     <div class="col-lg-4" style="margin-bottom: 20px">
                         <input required type="radio" id="control_03" name="categoria" value="Bebidas">
-                        <label class="lradio" for="control_03">
+                        <label onclick="elegirCategoria('Bebidas')" class="lradio" for="control_03">
                             <img src="/img/bebidas.png" style="width: 50px" alt="">
                             <p>Bebidas</p>
                         </label>
@@ -122,21 +123,21 @@
                 <div class="row">
                     <div class="col-lg-4" style="margin-bottom: 20px">
                         <input required type="radio" id="control_05" name="categoria" value="Carnes">
-                        <label class="lradio" for="control_05">
+                        <label onclick="elegirCategoria('Carnes')" class="lradio" for="control_05">
                             <img src="/img/carne.png" style="width: 50px" alt="">
                             <p>Carnes</p>
                         </label>
                     </div>
                     <div class="col-lg-4" style="margin-bottom: 20px">
                         <input required type="radio" id="control_07" name="categoria" value="Farmacia">
-                        <label class="lradio" for="control_07">
+                        <label onclick="elegirCategoria('Farmacia')" class="lradio" for="control_07">
                             <img src="/img/farmacia.png" style="width: 50px" alt="">
                             <p>Farmacia</p>
                         </label>
                     </div>
                     <div class="col-lg-4" style="margin-bottom: 20px">
                         <input required type="radio" id="control_06" name="categoria" value="Otros">
-                        <label class="lradio" for="control_06">
+                        <label onclick="elegirCategoria('Otros')" class="lradio" for="control_06">
                             <p>Otros</p>
                         </label>
                     </div>
@@ -146,9 +147,53 @@
         </div>
     </div>
 
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Selecciona un producto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div id="lista_productos" class="row">
+
+                </div>
+                <br>
+                <hr>
+                <label for="cantidad">Peso en libras o unidades</label>
+                <input  id="cantidad" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+            </div>
+          </div>
+        </div>
+    </div>
+
     <script>
         function elegirCategoria(valor){
-            $('#exampleModal').modal("hide")
+            $.ajax({
+                url: '/productos-categoria?categoria='+valor,
+                type: 'GET',
+                success: function(response) {
+                    $('#exampleModal').modal("hide")
+                    $('#exampleModal2').modal("show")
+
+                    var div_lista = document.getElementById("lista_productos");
+                    var div = "";
+                    response.forEach(element => {
+                        div += '<div class="col-lg-3" style="margin-bottom: 20px">'+
+                                    '<input required type="radio" id="control_06" name="producto_manual" value="'+element.codigo_barras+'">'+
+                                    '<label class="lradio" for="control_06" style="padding-top: 0px !important">'+
+                                        '<img src="/imagenes_productos/'+element.imagen+'" style="width: 50px" alt="">'+
+                                        '<p style="font-size: 16px">'+element.descripcion+'</p>'+
+                                    '</label>'+
+                                '</div>';
+                    });
+
+                    div_lista.innerHTML = "";
+                    div_lista.innerHTML = div;
+                }
+            });
         }
     </script>
 @endsection

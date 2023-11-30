@@ -38,3 +38,6 @@ Route::middleware("auth")
         Route::delete("/productoDeVenta", "VenderController@quitarProductoDeVenta")->name("quitarProductoDeVenta");
         Route::post("/terminarOCancelarVenta", "VenderController@terminarOCancelarVenta")->name("terminarOCancelarVenta");
     });
+
+
+Route::get("/productos-categoria", "ProductosController@productosCategoria")->name("productosCategoria");

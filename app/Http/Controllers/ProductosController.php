@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Producto;
 use Illuminate\Http\Request;
 
+use DB;
+
 class ProductosController extends Controller
 {
     /**
@@ -104,5 +106,15 @@ class ProductosController extends Controller
     {
         $producto->delete();
         return redirect()->route("productos.index")->with("mensaje", "Producto eliminado");
+    }
+
+    public function productosCategoria(Request $request){
+        $categoria = $request->input('categoria');
+
+        $productos = DB::connection('mysql')->table('productos')
+        ->where("categoria", $categoria)
+        ->get();
+        
+        return response()->json($productos);
     }
 }
