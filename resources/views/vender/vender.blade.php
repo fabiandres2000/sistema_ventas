@@ -177,11 +177,11 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <label for="precio">Precio a vender</label>
-                            <input oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <input required oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="peso en libras o unidades">
                         </div>
                         <div class="col-lg-6">
                             <label for="cantidad_manual">Peso en kilos o unidades</label>
-                            <input oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <input required oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
                         </div>
                     </div>
                    
