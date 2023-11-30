@@ -1,6 +1,6 @@
 /*
-SQLyog Community v13.1.7 (64 bit)
-MySQL - 8.0.35 : Database - punto_venta
+SQLyog Community v13.2.0 (64 bit)
+MySQL - 8.0.30 : Database - punto_venta
 *********************************************************************
 */
 
@@ -27,28 +27,33 @@ CREATE TABLE `clientes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `clientes` */
 
 insert  into `clientes`(`id`,`nombre`,`telefono`,`created_at`,`updated_at`) values 
-(1,'Publico General','3042036320',NULL,NULL);
+(1,'Publico General','3042036320',NULL,NULL),
+(2,'Fabian Quintero','301212244','2023-11-30 12:47:51','2023-11-30 12:47:51'),
+(3,'Duvan Lopez','355454757','2023-11-30 12:48:03','2023-11-30 12:48:03'),
+(4,'Juan Jose Lopez','55649898978','2023-11-30 12:48:19','2023-11-30 12:48:19');
 
-/*Table structure for table `failed_jobs` */
+/*Table structure for table `fiados` */
 
-DROP TABLE IF EXISTS `failed_jobs`;
+DROP TABLE IF EXISTS `fiados`;
 
-CREATE TABLE `failed_jobs` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `fiados` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int DEFAULT NULL,
+  `id_factura` int DEFAULT NULL,
+  `total_fiado` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-/*Data for the table `failed_jobs` */
+/*Data for the table `fiados` */
+
+insert  into `fiados`(`id`,`id_cliente`,`id_factura`,`total_fiado`) values 
+(3,2,19,11040.5),
+(4,3,20,10200);
 
 /*Table structure for table `migrations` */
 
@@ -78,105 +83,6 @@ insert  into `migrations`(`id`,`migration`,`batch`) values
 (12,'2020_03_10_014423_create_clientes_table',1),
 (13,'2020_03_10_023628_agregar_id_cliente_ventas',1);
 
-/*Table structure for table `oauth_access_tokens` */
-
-DROP TABLE IF EXISTS `oauth_access_tokens`;
-
-CREATE TABLE `oauth_access_tokens` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint unsigned DEFAULT NULL,
-  `client_id` bigint unsigned NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `revoked` tinyint(1) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `expires_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `oauth_access_tokens_user_id_index` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `oauth_access_tokens` */
-
-/*Table structure for table `oauth_auth_codes` */
-
-DROP TABLE IF EXISTS `oauth_auth_codes`;
-
-CREATE TABLE `oauth_auth_codes` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint unsigned NOT NULL,
-  `client_id` bigint unsigned NOT NULL,
-  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `revoked` tinyint(1) NOT NULL,
-  `expires_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `oauth_auth_codes_user_id_index` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `oauth_auth_codes` */
-
-/*Table structure for table `oauth_clients` */
-
-DROP TABLE IF EXISTS `oauth_clients`;
-
-CREATE TABLE `oauth_clients` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint unsigned DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `redirect` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `personal_access_client` tinyint(1) NOT NULL,
-  `password_client` tinyint(1) NOT NULL,
-  `revoked` tinyint(1) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `oauth_clients_user_id_index` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `oauth_clients` */
-
-/*Table structure for table `oauth_personal_access_clients` */
-
-DROP TABLE IF EXISTS `oauth_personal_access_clients`;
-
-CREATE TABLE `oauth_personal_access_clients` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `client_id` bigint unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `oauth_personal_access_clients` */
-
-/*Table structure for table `oauth_refresh_tokens` */
-
-DROP TABLE IF EXISTS `oauth_refresh_tokens`;
-
-CREATE TABLE `oauth_refresh_tokens` (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `access_token_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `revoked` tinyint(1) NOT NULL,
-  `expires_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `oauth_refresh_tokens` */
-
-/*Table structure for table `password_resets` */
-
-DROP TABLE IF EXISTS `password_resets`;
-
-CREATE TABLE `password_resets` (
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  KEY `password_resets_email_index` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-/*Data for the table `password_resets` */
-
 /*Table structure for table `productos` */
 
 DROP TABLE IF EXISTS `productos`;
@@ -185,28 +91,30 @@ CREATE TABLE `productos` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `codigo_barras` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `categoria` text COLLATE utf8mb4_unicode_ci,
+  `categoria` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `precio_compra` decimal(9,2) NOT NULL,
   `precio_venta` decimal(9,2) NOT NULL,
   `existencia` decimal(9,2) NOT NULL,
+  `unidad_medida` text COLLATE utf8mb4_unicode_ci,
   `imagen` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `productos` */
 
-insert  into `productos`(`id`,`codigo_barras`,`descripcion`,`categoria`,`precio_compra`,`precio_venta`,`existencia`,`imagen`,`created_at`,`updated_at`) values 
-(10,'no','papa sin lavar','Alimentos',1000.00,1200.00,20.00,'1701299580.jpg','2023-11-29 17:13:00','2023-11-29 17:13:00'),
-(12,'435345345','mayonesa fruco','Alimentos',1000.00,1200.00,5.00,'1701299800.jpg','2023-11-29 17:16:40','2023-11-29 17:16:40'),
-(13,'7657567567','salsa de tomate fruco','Alimentos',1000.00,1200.00,15.00,'1701299828.jpg','2023-11-29 17:17:08','2023-11-29 17:17:08'),
-(14,'7657567568','limpido','Aseo',3000.00,3800.00,20.00,'1701300016.jpg','2023-11-29 17:20:16','2023-11-29 17:26:40'),
-(15,'7867865345','trapero','Aseo',2000.00,2900.00,10.00,'1701300701.jpg','2023-11-29 17:31:41','2023-11-29 17:31:41'),
-(16,'8678768678678','escoba de piso','Aseo',4000.00,5000.00,15.00,'1701300744.jpg','2023-11-29 17:32:24','2023-11-29 17:32:24'),
-(17,'979876896','postobon personal','Bebidas',1800.00,2500.00,15.00,'1701300797.jpg','2023-11-29 17:33:17','2023-11-29 17:33:17'),
-(18,'345345345','coca cola personal','Bebidas',1800.00,2600.00,20.00,'1701300847.jpg','2023-11-29 17:34:07','2023-11-29 17:34:07'),
-(19,'6567657567','soda','Bebidas',1200.00,1500.00,10.00,'1701301537.jpg','2023-11-29 17:45:37','2023-11-29 17:45:37');
+insert  into `productos`(`id`,`codigo_barras`,`descripcion`,`categoria`,`precio_compra`,`precio_venta`,`existencia`,`unidad_medida`,`imagen`,`created_at`,`updated_at`) values 
+(10,'papa_sin_lavar','papa sin lavar','Alimentos',1000.00,1200.00,21.23,'Kilos','1701299580.jpg','2023-11-29 17:13:00','2023-11-30 14:14:59'),
+(12,'435345345','mayonesa fruco','Alimentos',1000.00,1200.00,20.00,'Unidades','1701299800.jpg','2023-11-29 17:16:40','2023-11-30 10:34:36'),
+(13,'7657567567','salsa de tomate fruco','Alimentos',1000.00,1200.00,11.00,'Unidades','1701299828.jpg','2023-11-29 17:17:08','2023-11-30 10:30:17'),
+(14,'7657567568','limpido','Aseo',3000.00,3800.00,19.00,'Unidades','1701300016.jpg','2023-11-29 17:20:16','2023-11-30 13:32:57'),
+(15,'7867865345','trapero','Aseo',2000.00,2900.00,10.00,'Unidades','1701300701.jpg','2023-11-29 17:31:41','2023-11-30 10:30:29'),
+(16,'8678768678678','escoba de piso','Aseo',4000.00,5000.00,12.00,'Unidades','1701300744.jpg','2023-11-29 17:32:24','2023-11-30 13:56:02'),
+(17,'979876896','postobon personal','Bebidas',1800.00,2500.00,10.00,'Unidades','1701300797.jpg','2023-11-29 17:33:17','2023-11-30 13:56:02'),
+(18,'345345345','coca cola personal','Bebidas',1800.00,2600.00,16.00,'Unidades','1701300847.jpg','2023-11-29 17:34:07','2023-11-30 13:56:02'),
+(19,'6567657567','soda','Bebidas',1200.00,1500.00,10.00,'Unidades','1701301537.jpg','2023-11-29 17:45:37','2023-11-30 10:30:37'),
+(21,'222222222','guineo verde','Alimentos',1600.00,2000.00,13.73,'Kilos','1701361632.jpg','2023-11-30 10:27:12','2023-11-30 14:14:59');
 
 /*Table structure for table `productos_vendidos` */
 
@@ -218,15 +126,26 @@ CREATE TABLE `productos_vendidos` (
   `descripcion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `codigo_barras` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `precio` decimal(9,2) NOT NULL,
-  `cantidad` decimal(9,2) NOT NULL,
+  `cantidad` decimal(9,3) NOT NULL,
+  `unidad` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `productos_vendidos_id_venta_foreign` (`id_venta`),
   CONSTRAINT `productos_vendidos_id_venta_foreign` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `productos_vendidos` */
+
+insert  into `productos_vendidos`(`id`,`id_venta`,`descripcion`,`codigo_barras`,`precio`,`cantidad`,`unidad`,`created_at`,`updated_at`) values 
+(10,19,'guineo verde','222222222',2000.00,4.260,'Kg','2023-11-30 13:55:06','2023-11-30 13:55:06'),
+(11,19,'papa sin lavar','papa_sin_lavar',1200.00,7.100,'Kg','2023-11-30 13:55:06','2023-11-30 13:55:06'),
+(12,20,'coca cola personal','345345345',2600.00,2.000,'Und','2023-11-30 13:56:02','2023-11-30 13:56:02'),
+(13,20,'postobon personal','979876896',2500.00,1.000,'Und','2023-11-30 13:56:02','2023-11-30 13:56:02'),
+(14,20,'escoba de piso','8678768678678',5000.00,1.000,'Und','2023-11-30 13:56:02','2023-11-30 13:56:02'),
+(17,24,'guineo verde','222222222',2000.00,0.475,'Kg','2023-11-30 14:04:15','2023-11-30 14:04:15'),
+(18,25,'papa sin lavar','papa_sin_lavar',1200.00,1.667,'Kg','2023-11-30 14:14:59','2023-11-30 14:14:59'),
+(19,25,'guineo verde','222222222',2000.00,0.600,'Kg','2023-11-30 14:14:59','2023-11-30 14:14:59');
 
 /*Table structure for table `users` */
 
@@ -259,11 +178,21 @@ CREATE TABLE `ventas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `id_cliente` bigint unsigned NOT NULL,
+  `total_pagar` double DEFAULT NULL,
+  `total_dinero` double DEFAULT NULL,
+  `total_fiado` double DEFAULT NULL,
+  `total_vueltos` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ventas_id_cliente_foreign` (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `ventas` */
+
+insert  into `ventas`(`id`,`created_at`,`updated_at`,`id_cliente`,`total_pagar`,`total_dinero`,`total_fiado`,`total_vueltos`) values 
+(19,'2023-11-30 13:55:06','2023-11-30 13:55:06',2,17040.5,6000,11040.5,-11040.5),
+(20,'2023-11-30 13:56:02','2023-11-30 13:56:02',3,12700,2500,10200,-10200),
+(24,'2023-11-30 14:04:15','2023-11-30 14:04:15',1,950,950,0,0),
+(25,'2023-11-30 14:14:59','2023-11-30 14:14:59',3,3200,4000,0,800);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

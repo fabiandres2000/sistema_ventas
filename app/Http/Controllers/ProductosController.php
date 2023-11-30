@@ -43,6 +43,7 @@ class ProductosController extends Controller
             'precio_compra' => 'required|numeric',
             'precio_venta' => 'required|numeric',
             'existencia' => 'required|numeric',
+            'unidad_medida' => 'required',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

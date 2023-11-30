@@ -4,18 +4,18 @@
 <br>
     <div class="row">
         <div class="col-12">
-            <h1>Nueva venta <i class="fa fa-cart-plus"></i></h1>
-            @include("notificacion")
             <div class="row">
-                <div class="col-12 col-md-6">
-                    <form action="{{route("terminarOCancelarVenta")}}" method="post">
+                <div class="col-lg-12 text-right" style="display: flex; justify-content: end">
+                    @if(session("productos") !== null)
+                        <button style="font-size: 23px" data-toggle="modal" data-target="#modalConfirmarCompra" class="btn btn-success">
+                            Terminar venta
+                        </button>                       
+                    @endif
+                    <form style="margin-left: 20px" action="{{route("terminarOCancelarVenta")}}" method="post">
                         @csrf
                         @if(session("productos") !== null)
-                            <div class="form-group">
-                                <button name="accion" value="terminar" type="submit" class="btn btn-success">Terminar
-                                    venta
-                                </button>
-                                <button name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
+                            <div class="text-right">
+                                <button style="font-size: 23px" name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
                                     venta
                                 </button>
                             </div>
@@ -23,6 +23,7 @@
                     </form>
                 </div>
             </div>
+            @include("notificacion")
             <div class="row">
                 <div class="col-lg-6">
                     <form action="{{route("agregarProductoVenta")}}" method="post">
@@ -43,7 +44,7 @@
             
             <hr>
             @if(session("productos") !== null)
-                <h2>Total: ${{number_format($total, 2)}}</h2>
+                <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Total: ${{number_format($total, 2)}}</h2>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -52,6 +53,7 @@
                             <th>Descripción</th>
                             <th>Precio</th>
                             <th>Cantidad</th>
+                            <th>Total</th>
                             <th>Quitar</th>
                         </tr>
                         </thead>
@@ -61,7 +63,10 @@
                                 <td>{{$producto->codigo_barras}}</td>
                                 <td>{{$producto->descripcion}}</td>
                                 <td>${{number_format($producto->precio_venta, 2)}}</td>
-                                <td>{{$producto->cantidad}}</td>
+                                <td>
+                                  <strong>{{$producto->cantidad}}</strong> {{ $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und") }}
+                                </td>
+                                <td>${{number_format($producto->precio_total, 2)}}</td>
                                 <td>
                                     <form action="{{route("quitarProductoDeVenta")}}" method="post">
                                         @method("delete")
@@ -82,6 +87,7 @@
                     <br>
                     Escanea el código de barras o escribe y presiona Enter</h2>
             @endif
+            <br><br>
         </div>
     </div>
 
@@ -156,18 +162,96 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-                <div id="lista_productos" class="row">
+            <form action="{{route("agregarProductoVenta")}}" method="post">
+                @csrf
+                <div class="modal-body">
+                
+                    <div id="lista_productos" class="row">
 
+                    </div>
+                    <br>
+                    <hr>
+                    <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Precio venta = <strong id="etiqueta_precio"></strong></h2>
+                    <input id="codigo_barras" autocomplete="off" required name="codigo" type="hidden"class="form-control">
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="precio">Precio a vender</label>
+                            <input oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="peso en libras o unidades">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="cantidad_manual">Peso en kilos o unidades</label>
+                            <input oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+                        </div>
+                    </div>
+                   
                 </div>
-                <br>
-                <hr>
-                <label for="cantidad">Peso en libras o unidades</label>
-                <input  id="cantidad" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
-            </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger">Volver</button>
+                    <button type="submit" class="btn btn-success">Agregar Producto</button>
+                </div>
+            </form>
           </div>
         </div>
     </div>
+
+    <div class="modal" id="modalConfirmarCompra" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title">Confirmar Compra</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route("terminarOCancelarVenta")}}" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <select style="font-size: 20px;" name="id_cliente" class="form-control" id="cliente">
+                                    @foreach($clientes as $cliente)
+                                        <option value="{{$cliente->id}}">{{$cliente->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Total a pagar</label>
+                                <input  required name="total_pagar" style="font-size: 20px" class="form-control" type="text" value="{{round($total, 2)}}">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Total Cambio</label>
+                                <input required name="total_vueltos" id="vueltos" style="font-size: 20px" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Total Dinero</label>
+                                <input required name="total_dinero" oninput="calcularCambio(this, {{$total}})" style="font-size: 20px" class="form-control" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Total Fiado</label>
+                                <input id="fiado" required name="total_fiado" style="font-size: 20px" class="form-control" type="currency">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-lg-12">
+                            <div class="text-right">
+                                @if(session("productos") !== null)
+                                    <button  name="accion" value="terminar" type="submit" class="btn btn-success">Terminar venta</button>
+                                @endif
+                                <a style="color: white" class="btn btn-danger" data-dismiss="modal">Cerrar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <script>
         function elegirCategoria(valor){
@@ -180,20 +264,54 @@
 
                     var div_lista = document.getElementById("lista_productos");
                     var div = "";
+                    id = 123;
                     response.forEach(element => {
-                        div += '<div class="col-lg-3" style="margin-bottom: 20px">'+
-                                    '<input required type="radio" id="control_06" name="producto_manual" value="'+element.codigo_barras+'">'+
-                                    '<label class="lradio" for="control_06" style="padding-top: 0px !important">'+
+                        div += '<div class="col-lg-2" style="margin-bottom: 20px">'+
+                                    '<input required type="radio" id="control_'+id+'" name="producto_manual" value="'+element.codigo_barras+'">'+
+                                    '<label onclick="seleccionarProducto(\'' + element.codigo_barras + '\', '+element.precio_venta+')" class="lradio" for="control_'+id+'" style="padding-top: 0px !important">'+
                                         '<img src="/imagenes_productos/'+element.imagen+'" style="width: 50px" alt="">'+
-                                        '<p style="font-size: 16px">'+element.descripcion+'</p>'+
+                                        '<p style="font-size: 13px">'+element.descripcion+'</p>'+
                                     '</label>'+
                                 '</div>';
+
+                            id++;
                     });
 
                     div_lista.innerHTML = "";
                     div_lista.innerHTML = div;
                 }
             });
+        }
+
+        var precio_seleccionado = 0;
+        function seleccionarProducto(item, precio){
+            document.getElementById("codigo_barras").value = item;
+            precio_seleccionado = precio;
+
+            document.getElementById("etiqueta_precio").innerHTML = precio_seleccionado.toLocaleString("en", {
+                style: "currency",
+                currency: "COP"
+            });
+        }
+
+        function calcularKilos(element){
+            var numero = (element.value / precio_seleccionado);
+            let numeroRedondeado = numero % 1 !== 0 ? parseFloat(numero.toFixed(3)) : numero;
+            document.getElementById("cantidad_manual").value = numeroRedondeado;
+        }
+
+        function calcularPrecio(element){
+            document.getElementById("precio").value = (element.value * precio_seleccionado).toFixed(3);
+        }
+
+        function calcularCambio(element, total){
+            var valor = (-1) * (total - element.value).toFixed(3)
+            document.getElementById("vueltos").value = valor;
+            if(valor < 0){
+                document.getElementById("fiado").value = (-1) * valor;
+            }else{
+                document.getElementById("fiado").value = 0;
+            }
         }
     </script>
 @endsection

@@ -31,7 +31,7 @@
                                         type="decimal(9,2)" placeholder="Precio de compra">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class="label">Precio de venta</label>
                                     <input required value="{{$producto->precio_venta}}" autocomplete="off" name="precio_venta"
@@ -39,12 +39,22 @@
                                         type="decimal(9,2)" placeholder="Precio de venta">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class="label">Existencia</label>
                                     <input required value="{{$producto->existencia}}" autocomplete="off" name="existencia"
                                         class="form-control"
                                         type="decimal(9,2)" placeholder="Existencia">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label class="label">Medida</label>
+                                    <select name="unidad_medida" id="unidad_medida" class="form-control">
+                                        <option {{ $producto->unidad_medida == 'Libras' ? 'selected' : '' }} value="Libras">Libras</option>
+                                        <option {{ $producto->unidad_medida == 'Kilos' ? 'selected' : '' }} value="Kilos">Kilos</option>
+                                        <option {{ $producto->unidad_medida == 'Unidades' ? 'selected' : '' }} value="Unidades">Unidades</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -109,3 +119,19 @@
         </div>
     </div>
 @endsection
+<script>
+    function cargarImagen() {
+        var input = document.getElementById('imagen');
+        var imagenPrevio = document.getElementById('imagen_previa');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagenPrevio.src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

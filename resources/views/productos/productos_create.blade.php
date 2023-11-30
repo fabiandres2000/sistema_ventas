@@ -28,18 +28,28 @@
                                         type="decimal(9,2)" placeholder="Precio de compra">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class="label">Precio de venta</label>
                                     <input required autocomplete="off" name="precio_venta" class="form-control"
                                         type="decimal(9,2)" placeholder="Precio de venta">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label class="label">Existencia</label>
                                     <input required autocomplete="off" name="existencia" class="form-control"
                                         type="number" placeholder="Existencia">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label class="label">Medida</label>
+                                    <select name="unidad_medida" id="unidad_medida" class="form-control">
+                                        <option value="Libras">Libras</option>
+                                        <option value="Kilos">Kilos</option>
+                                        <option value="Unidades">Unidades</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

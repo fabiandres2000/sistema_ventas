@@ -33,7 +33,7 @@
                             <td>{{$producto->precio_compra}}</td>
                             <td>{{$producto->precio_venta}}</td>
                             <td>{{$producto->precio_venta - $producto->precio_compra}}</td>
-                            <td>{{$producto->existencia}}</td>
+                            <td>{{$producto->existencia}} <strong>{{ $producto->unidad_medida }}</strong></td>
                             <td style="text-align: center">
                                 <a class="btn btn-warning" href="{{route("productos.edit",[$producto])}}">
                                     <i class="fa fa-edit"></i>

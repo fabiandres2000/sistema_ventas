@@ -8,6 +8,8 @@ use App\ProductoVendido;
 use App\Venta;
 use Illuminate\Http\Request;
 
+use DB;
+
 class VenderController extends Controller
 {
 
@@ -22,12 +24,21 @@ class VenderController extends Controller
 
     public function terminarVenta(Request $request)
     {
-        // Crear una venta
         $venta = new Venta();
-        $venta->id_cliente = "1";
+        $venta->id_cliente =  $request->input('id_cliente');
+        $venta->total_pagar =  $request->input('total_pagar');
+        $venta->total_dinero =  $request->input('total_dinero');
+        $venta->total_fiado =  $request->input('total_fiado');
+        $venta->total_vueltos =  $request->input('total_vueltos');
         $venta->saveOrFail();
+
+        if($venta->total_fiado > 0){
+            $this->guardarFiado($venta->id_cliente, $venta->id,  $venta->total_fiado);
+        }
+
         $idVenta = $venta->id;
         $productos = $this->obtenerProductos();
+
         // Recorrer carrito de compras
         foreach ($productos as $producto) {
             // El producto que se vende...
@@ -38,6 +49,7 @@ class VenderController extends Controller
                 "codigo_barras" => $producto->codigo_barras,
                 "precio" => $producto->precio_venta,
                 "cantidad" => $producto->cantidad,
+                "unidad" => $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und")
             ]);
             // Lo guardamos
             $productoVendido->saveOrFail();
@@ -50,6 +62,18 @@ class VenderController extends Controller
         return redirect()
             ->route("vender.index")
             ->with("mensaje", "Venta terminada");
+    }
+
+    public function guardarFiado($id_cliente, $id_factura, $total_fiado){
+        $datos = [
+            'id_cliente' => $id_cliente,
+            'id_factura' => $id_factura,
+            'total_fiado' => $total_fiado
+        ];
+
+        DB::connection('mysql')->table('fiados')->insert(
+            $datos 
+        );
     }
 
     private function obtenerProductos()
@@ -68,8 +92,7 @@ class VenderController extends Controller
 
     private function guardarProductos($productos)
     {
-        session(["productos" => $productos,
-        ]);
+        session(["productos" => $productos]);
     }
 
     public function cancelarVenta()
@@ -117,12 +140,22 @@ class VenderController extends Controller
                     "tipo" => "danger"
                 ]);
         }
+
         $productos = $this->obtenerProductos();
         $posibleIndice = $this->buscarIndiceDeProducto($producto->codigo_barras, $productos);
         // Es decir, producto no fue encontrado
         if ($posibleIndice === -1) {
-            $producto->cantidad = $cantidad;
-            array_push($productos, $producto);
+            if ($cantidad <= $producto->existencia) {
+                $producto->cantidad = $cantidad;
+                $producto->precio_total = round($producto->cantidad * $producto->precio_venta);
+                array_push($productos, $producto);
+            }else{
+                return redirect()->route("vender.index")
+                ->with([
+                    "mensaje" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
+                    "tipo" => "danger"
+                ]);
+            }
         } else {
             if ($productos[$posibleIndice]->cantidad + $cantidad > $producto->existencia) {
                 return redirect()->route("vender.index")
@@ -132,6 +165,7 @@ class VenderController extends Controller
                     ]);
             }
             $productos[$posibleIndice]->cantidad += $cantidad;
+            $productos[$posibleIndice]->precio_total =  round($productos[$posibleIndice]->cantidad * $productos[$posibleIndice]->precio_venta);
         }
         $this->guardarProductos($productos);
     }
@@ -155,8 +189,9 @@ class VenderController extends Controller
     {
         $total = 0;
         foreach ($this->obtenerProductos() as $producto) {
-            $total += $producto->cantidad * $producto->precio_venta;
+            $total += round($producto->cantidad * $producto->precio_venta);
         }
+
         return view("vender.vender",
             [
                 "total" => $total,
