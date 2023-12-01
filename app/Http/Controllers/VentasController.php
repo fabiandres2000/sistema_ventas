@@ -12,9 +12,9 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 class VentasController extends Controller
 {
 
-    public function ticket(Request $request)
+    public function ticket($idVenta)
     {
-        $venta = Venta::findOrFail($request->get("id"));
+        $venta = Venta::findOrFail($idVenta);
 
         define('EURO',chr(36));
         $pdf = new Fpdf('P','mm',array(80,150));
@@ -81,7 +81,7 @@ class VentasController extends Controller
         $pdf->Ln(3);
         $pdf->Cell(60,0,'CADUCA EL DIA  01/11/2019',0,1,'C');
         
-        $pdf->Output('F', 'tickets/ticket_venta_'.$request->get("id").'.pdf');
+        $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
     }
 
     public function imprimirTicket(Request $request){

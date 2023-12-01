@@ -1,33 +1,14 @@
-{{--
-
-____          _____               _ _           _
-|  _ \        |  __ \             (_) |         | |
-| |_) |_   _  | |__) |_ _ _ __ _____| |__  _   _| |_ ___
-|  _ <| | | | |  ___/ _` | '__|_  / | '_ \| | | | __/ _ \
-| |_) | |_| | | |  | (_| | |   / /| | |_) | |_| | ||  __/
-|____/ \__, | |_|   \__,_|_|  /___|_|_.__/ \__, |\__\___|
-       __/ |                               __/ |
-      |___/                               |___/
-
-  Blog:       https://parzibyte.me/blog
-  Ayuda:      https://parzibyte.me/blog/contrataciones-ayuda/
-  Contacto:   https://parzibyte.me/blog/contacto/
-
-  Copyright (c) 2020 Luis Cabrera Benito
-  Licenciado bajo la licencia MIT
-
-  El texto de arriba debe ser incluido en cualquier redistribucion
---}}
 @extends("maestra")
 @section("titulo", "Clientes")
 @section("contenido")
+<br>
     <div class="row">
         <div class="col-12">
             <h1>Clientes <i class="fa fa-users"></i></h1>
             <a href="{{route("clientes.create")}}" class="btn btn-success mb-2">Agregar</a>
             @include("notificacion")
-            <div class="table-responsive">
-                <table class="table table-bordered">
+            <div  class="table-responsive">
+                <table id="tabla_clientes_lista" class="table table-bordered">
                     <thead>
                     <tr>
                         <th>Nombre</th>
@@ -63,4 +44,28 @@ ____          _____               _ _           _
             </div>
         </div>
     </div>
+    <script>
+        $('#tabla_clientes_lista').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Clientes",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Clientes",
+                    "infoFiltered": "(Filtrado de _MAX_ total Clientes)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Clientes",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+    </script>
 @endsection

@@ -8,6 +8,8 @@ use App\ProductoVendido;
 use App\Venta;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\VentasController;
+
 use DB;
 
 class VenderController extends Controller
@@ -58,6 +60,10 @@ class VenderController extends Controller
             $productoActualizado->existencia -= $productoVendido->cantidad;
             $productoActualizado->saveOrFail();
         }
+
+        $objeto = new VentasController();
+        $myVariable = $objeto->ticket($idVenta);
+
         $this->vaciarProductos();
         return redirect()
             ->route("vender.index")

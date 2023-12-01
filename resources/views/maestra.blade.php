@@ -112,11 +112,33 @@
                 box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
             }
         }
+
+        .btn-morado {
+            color: #fff;
+            background-color: #713bdf !important;
+            border-color: #6202ff !important;
+        }
+
+        .btn-morado:hover{
+            background-color: #5b17e2 !important;
+            color: white 
+        }
+           
+        .btn-gris {
+            color: #222;
+            background-color: #c9c4c4;
+            border-color: #9c9595;
+        }
+
+        .btn-gris:hover {
+            color: #222;
+            background-color: #acabab;
+            border-color: #9c9595;
+        }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" target="_blank" href="//parzibyte.me/blog">{{env("APP_NAME")}}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             id="botonMenu" aria-label="Mostrar u ocultar menú">
         <span class="navbar-toggler-icon"></span>
@@ -158,18 +180,12 @@
         <ul class="navbar-nav ml-auto">
             @auth
                 <li class="nav-item">
-                    <a href="{{route("logout")}}" class="nav-link">
-                        Salir ({{ Auth::user()->name }})
+                    <a style="color: #fff" href="{{route("logout")}}" class="nav-link btn btn-danger">
+                        Salir ({{ Auth::user()->name }}) <i class="fas fa-power-off"></i>
                     </a>
                 </li>
             @endauth
-            <li class="nav-item">
-                <a class="nav-link" href="{{route("soporte.index")}}">Soporte&nbsp;<i
-                        class="fa fa-hands-helping"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route("acerca_de.index")}}">Acerca de&nbsp;<i class="fa fa-info"></i></a>
-            </li>
+           
         </ul>
     </div>
 </nav>

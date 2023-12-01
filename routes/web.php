@@ -31,6 +31,8 @@ Route::middleware("auth")
         Route::resource("clientes", "ClientesController");
         Route::resource("usuarios", "UserController")->parameters(["usuarios" => "user"]);
         Route::resource("productos", "ProductosController");
+        Route::get("/usuarios-deudores", "UserController@deudores")->name("usuarios.deudores");
+        Route::post("/usuarios-abonar", "UserController@abonar")->name("usuarios.abonar");
         Route::get("/ventas/ticket", "VentasController@ticket")->name("ventas.ticket");
         Route::resource("ventas", "VentasController");
         Route::get("/vender", "VenderController@index")->name("vender.index");
