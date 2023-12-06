@@ -44,43 +44,63 @@
             
             <hr>
             @if(session("productos") !== null)
-                <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Total: ${{number_format($total, 2)}}</h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Código de barras</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>Quitar</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach(session("productos") as $producto)
-                            <tr>
-                                <td>{{$producto->codigo_barras}}</td>
-                                <td>{{$producto->descripcion}}</td>
-                                <td>${{number_format($producto->precio_venta, 2)}}</td>
-                                <td>
-                                  <strong>{{$producto->cantidad}}</strong> {{ $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und") }}
-                                </td>
-                                <td>${{number_format($producto->precio_total, 2)}}</td>
-                                <td>
-                                    <form action="{{route("quitarProductoDeVenta")}}" method="post">
-                                        @method("delete")
-                                        @csrf
-                                        <input type="hidden" name="indice" value="{{$loop->index}}">
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Total: ${{number_format($total, 2)}}</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Código de barras</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                    <th>Quitar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach(session("productos") as $producto)
+                                    <tr>
+                                        <td>{{$producto->codigo_barras}}</td>
+                                        <td>{{$producto->descripcion}}</td>
+                                        <td>${{number_format($producto->precio_venta, 2)}}</td>
+                                        <td>
+                                          <strong>{{$producto->cantidad}}</strong> {{ $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und") }}
+                                        </td>
+                                        <td>${{number_format($producto->precio_total, 2)}}</td>
+                                        <td>
+                                            <form action="{{route("quitarProductoDeVenta")}}" method="post">
+                                                @method("delete")
+                                                @csrf
+                                                <input type="hidden" name="indice" value="{{$loop->index}}">
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-3" style="display: flex; flex-wrap: wrap;">
+                        @php
+                            $elementos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '<i class="fas fa-backspace"></i>'];
+                        @endphp
+                        @for ($i = 0; $i < count($elementos); $i++)
+                            <div style="cursor: pointer; border-radius: 7px; display: flex; justify-content: center; align-items: center;width: 60px; height: 60px; background-color: #44bedc; margin: 10px">
+                                <p style="margin:0px; font-size: 28px; font-weight: bold">{!! $elementos[$i] !!}</p>   
+                            </div>
+                        @endfor
+                        <div>
+                            <div style="cursor: pointer; border-radius: 7px; display: flex; justify-content: center; align-items: center;width: 60px; height: 60px; background-color: #23a127; margin: 10px; color: white">
+                                <p style="margin:0px; font-size: 28px; font-weight: bold"><i class="fas fa-check"></i></p>   
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @else
                 <h2>Aquí aparecerán los productos de la venta
@@ -251,7 +271,7 @@
             </div>
           </div>
         </div>
-      </div>
+    </div>
 
     <script>
         function elegirCategoria(valor){
