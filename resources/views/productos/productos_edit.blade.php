@@ -112,9 +112,10 @@
                 <div class="col-lg-12">
                     @include("notificacion")
                     <button class="btn btn-success">Guardar</button>
-                    <a class="btn btn-primary" href="{{route("productos.index")}}">Volver</a>
+                    <a class="btn btn-primary" href="{{route("productos.index")}}">Volver al listado</a>
                 </div>
             </form>
+            <br><br>
         </div>
     </div>
 @endsection

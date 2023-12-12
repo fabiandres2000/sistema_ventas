@@ -135,6 +135,15 @@
             background-color: #acabab;
             border-color: #9c9595;
         }
+
+        table {
+            font-size: 20px !important
+        }
+
+        #tabla_productos_vender td, #tabla_productos_vender th {
+            padding: 5px;
+            font-size: 14px !important;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +188,12 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             @auth
+                <li style="margin-right: 15px" class="nav-item">
+                    <a style="color: #fff" href="{{route("logout")}}" class="nav-link btn btn-warning">
+                       Productos en alerta <i class="fas fa-exclamation-triangle"></i>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a style="color: #fff" href="{{route("logout")}}" class="nav-link btn btn-danger">
                         Salir ({{ Auth::user()->name }}) <i class="fas fa-power-off"></i>

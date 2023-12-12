@@ -174,24 +174,35 @@
     </div>
 
     <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Selecciona un producto</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+            <br>
             <form action="{{route("agregarProductoVenta")}}" method="post">
                 @csrf
                 <div class="modal-body">
-                
-                    <div id="lista_productos" class="row">
+                    <table id="tabla_productos_vender" style="width: 100%">
+                        <thead>
+                            <tr style="background-color: aqua;">
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Disponible</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista_productos" >
 
-                    </div>
+                        </tbody>
+                    </table>
                     <br>
                     <hr>
-                    <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Precio venta = <strong id="etiqueta_precio"></strong></h2>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <h2 style="background-color: rgb(255, 208, 0); padding: 5px; width: fit-content;">Producto: <strong id="etiqueta_nombre"></strong></h2>
+                        </div>
+                        <div class="col-lg-7">
+                            <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Precio venta: <strong id="etiqueta_precio"></strong></h2>
+                        </div>
+                    </div>
                     <input id="codigo_barras" autocomplete="off" required name="codigo" type="hidden"class="form-control">
                     <br>
                     <div class="row">
@@ -286,15 +297,21 @@
                     var div = "";
                     id = 123;
                     response.forEach(element => {
-                        div += '<div class="col-lg-2" style="margin-bottom: 20px">'+
-                                    '<input required type="radio" id="control_'+id+'" name="producto_manual" value="'+element.codigo_barras+'">'+
-                                    '<label onclick="seleccionarProducto(\'' + element.codigo_barras + '\', '+element.precio_venta+')" class="lradio" for="control_'+id+'" style="padding-top: 0px !important">'+
+                        div += '<tr style="cursor:pointer" onclick="seleccionarProducto(\'' + element.codigo_barras + '\', '+element.precio_venta+', \'' + element.descripcion + '\')" class="producto-row" id="row_'+id+'" style="margin-bottom: 20px">'+
+                                    '<td>'+
                                         '<img src="/imagenes_productos/'+element.imagen+'" style="width: 50px" alt="">'+
+                                    '</td>'+
+                                    '<td>'+
                                         '<p style="font-size: 13px">'+element.descripcion+'</p>'+
-                                    '</label>'+
-                                '</div>';
-
-                            id++;
+                                    '</td>'+
+                                    '<td>'+
+                                        '<p style="font-size: 13px">'+element.precio_venta+'</p>'+
+                                    '</td>'+
+                                    '<td>'+
+                                        '<p style="font-size: 13px">'+element.existencia+'</p>'+
+                                    '</td>'+
+                                '</tr>';
+                        id++;
                     });
 
                     div_lista.innerHTML = "";
@@ -304,7 +321,7 @@
         }
 
         var precio_seleccionado = 0;
-        function seleccionarProducto(item, precio){
+        function seleccionarProducto(item, precio, nombre_producto){
             document.getElementById("codigo_barras").value = item;
             precio_seleccionado = precio;
 
@@ -312,6 +329,8 @@
                 style: "currency",
                 currency: "COP"
             });
+
+            document.getElementById("etiqueta_nombre").innerHTML = nombre_producto;
         }
 
         function calcularKilos(element){

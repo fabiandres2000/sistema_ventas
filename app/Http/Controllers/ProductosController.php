@@ -118,4 +118,26 @@ class ProductosController extends Controller
         
         return response()->json($productos);
     }
+
+    public function modificarInventarioProducto(Request $request){
+
+        $cantidad_disponible = $request->input('cantidad_disponible');
+        $precio_compra = $request->input('precio_compra');
+        $precio_venta = $request->input('precio_venta');
+        $nueva_cantidad = $request->input('nueva_cantidad');
+        $codigo_producto = $request->input('codigo_producto');
+
+        $nueva_cantidad_disponible = $cantidad_disponible + $nueva_cantidad;
+
+        
+        DB::connection('mysql')->table('productos')
+        ->where('codigo_barras', $codigo_producto)
+        ->update([
+            'existencia' => $nueva_cantidad_disponible,
+            'precio_compra' => $precio_compra,
+            'precio_venta' => $precio_venta
+        ]);
+
+        return redirect()->route("productos.index")->with("mensaje", "Producto actualizado");
+    }
 }

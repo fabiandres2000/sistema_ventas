@@ -132,6 +132,7 @@ class VentasController extends Controller
     {
         $ventasConTotales = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
             ->select("ventas.*", "clientes.nombre as cliente")
+            ->orderBy("ventas.created_at", "DESC")
             ->get();
             
         return view("ventas.ventas_index", ["ventas" => $ventasConTotales,]);

@@ -32,6 +32,7 @@ class VenderController extends Controller
         $venta->total_dinero =  $request->input('total_dinero');
         $venta->total_fiado =  $request->input('total_fiado');
         $venta->total_vueltos =  $request->input('total_vueltos');
+        $venta->fecha_venta = date("Y-m-d");
         $venta->saveOrFail();
 
         if($venta->total_fiado > 0){

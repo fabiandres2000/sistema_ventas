@@ -109,6 +109,7 @@
                         <a class="btn btn-primary" href="{{route("productos.index")}}">Volver al listado</a>
                     </div>
                 </div>
+                <br><br>
             </form>
         </div>
     </div>
