@@ -196,18 +196,18 @@
                     <br>
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for="precio">Precio a vender</label>
-                            <input required oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <label style="font-size: 25px; font-weight: bold" for="precio">Precio a vender</label>
+                            <input style="font-size: 25px; font-weight: bold" required oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="peso en libras o unidades">
                         </div>
                         <div class="col-lg-6">
-                            <label for="cantidad_manual">Peso en kilos o unidades</label>
-                            <input required oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <label style="font-size: 25px; font-weight: bold" for="cantidad_manual">Peso en kilos o unidades</label>
+                            <input style="font-size: 25px; font-weight: bold" required oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
                         </div>
                     </div>
                    
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger">Volver</button>
+                    <button onclick="volverSeleccionarCategoria()" class="btn btn-danger">Volver</button>
                     <button type="submit" class="btn btn-success">Agregar Producto</button>
                 </div>
             </form>
@@ -332,6 +332,11 @@
             }else{
                 document.getElementById("fiado").value = 0;
             }
+        }
+
+        function volverSeleccionarCategoria(){
+            $('#exampleModal2').modal("hide")
+            $('#exampleModal').modal("show")
         }
     </script>
 @endsection

@@ -47,7 +47,6 @@
                                     <label class="label">Medida</label>
                                     <select name="unidad_medida" id="unidad_medida" class="form-control">
                                         <option value="Libras">Libras</option>
-                                        <option value="Kilos">Kilos</option>
                                         <option value="Unidades">Unidades</option>
                                     </select>
                                 </div>
