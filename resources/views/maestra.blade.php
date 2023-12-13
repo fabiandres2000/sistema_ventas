@@ -144,6 +144,14 @@
             padding: 5px;
             font-size: 14px !important;
         }
+
+        .card_ventas {
+            border-radius: 15px; 
+            padding: 20px; 
+            height: 130px; 
+            color: white;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+        }
     </style>
 </head>
 <body>

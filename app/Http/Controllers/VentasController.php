@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use Codedge\Fpdf\Fpdf\Fpdf;
+use App\Cliente;
 
 class VentasController extends Controller
 {
@@ -129,13 +130,38 @@ class VentasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {        
         $ventasConTotales = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
             ->select("ventas.*", "clientes.nombre as cliente")
             ->orderBy("ventas.created_at", "DESC")
             ->get();
+
+        
+        $totalVendido = 0;
+        
+        foreach ($ventasConTotales as $item) {
+            $totalVendido += $item->total_pagar;
+        }
+
+        $fiados = Cliente::join("fiados", "clientes.id", "=", "fiados.id_cliente")
+        ->sum('fiados.total_fiado');
+
+        $abonado = Cliente::join("abonos_fiados", "clientes.id", "=", "abonos_fiados.id_cliente")
+        ->sum("abonos_fiados.valor_abonado");
+
+        $totalFiado = $fiados - $abonado;
+
+        $hoy = date("Y-m-d");
+        $totalVendidoHoy = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
+        ->where("ventas.fecha_venta", $hoy)
+        ->sum("ventas.total_pagar");
             
-        return view("ventas.ventas_index", ["ventas" => $ventasConTotales,]);
+        return view("ventas.ventas_index", [
+            "ventas" => $ventasConTotales, 
+            "totalVendido" => $totalVendido,
+            "totalFiado" => $totalFiado,
+            "totalVendidoHoy" => $totalVendidoHoy
+        ]);
     }
 
     /**

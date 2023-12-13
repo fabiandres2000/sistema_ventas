@@ -3,8 +3,44 @@
 @section("contenido")
 <br>
     <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div style="padding: 20px;" class="col-lg-3">
+                    <div class="card_ventas" style="background-color: rgb(6, 139, 247);">
+                        <div style="width: 100%">
+                            <h3><strong>Total Vendido Hoy</strong></h3>
+                        </div> 
+                        <h1>$ {{ $totalVendidoHoy }}</h1>
+                        <i style="opacity: .7; font-size: 70px; position: absolute; right: 30px; bottom: 30px" class="fas fa-donate"></i>
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
+                <div style="padding: 20px;" class="col-lg-3">
+                    <div class="card_ventas" style="background-color: rgb(4, 95, 1);">
+                        <div style="width: 100%">
+                            <h3><strong>Total Vendido</strong></h3>
+                        </div> 
+                        <h1>$ {{ $totalVendido }}</h1>
+                        <i style="opacity: .7; font-size: 70px; position: absolute; right: 30px; bottom: 30px" class="fas fa-cash-register"></i>
+                    </div>
+                </div>
+                <div style="padding: 20px;" class="col-lg-3">
+                    <div class="card_ventas" style="background-color: rgb(247, 94, 6);">
+                        <div style="width: 100%">
+                            <h3><strong>Total fiado</strong></h3>
+                        </div> 
+                        <h1>$ {{ $totalFiado }}</h1>
+                        <i style="opacity: .7; font-size: 70px; position: absolute; right: 30px; bottom: 30px" class="fas fa-hand-holding-usd"></i>
+                    </div>
+                </div>
+                
+            </div>
+            <br>
+        </div>
+        <br>
+        <hr>
+        <h3 style="width: 100%; text-align: center"><strong>Listado de ventas</strong></h3>
         <div class="col-12">
-            <h1>Ventas <i class="fa fa-list"></i></h1>
             @include("notificacion")
             <div class="table-responsive">
                 <table id="tabla_ventas" class="table table-bordered">
