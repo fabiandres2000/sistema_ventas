@@ -154,7 +154,7 @@ class VenderController extends Controller
         if ($posibleIndice === -1) {
             if ($cantidad <= $producto->existencia) {
                 $producto->cantidad = $cantidad;
-                $producto->precio_total = round($producto->cantidad * $producto->precio_venta);
+                $producto->precio_total = self::redondearAl100($producto->cantidad * $producto->precio_venta);
                 array_push($productos, $producto);
             }else{
                 return redirect()->route("vender.index")
@@ -172,9 +172,13 @@ class VenderController extends Controller
                     ]);
             }
             $productos[$posibleIndice]->cantidad += $cantidad;
-            $productos[$posibleIndice]->precio_total =  round($productos[$posibleIndice]->cantidad * $productos[$posibleIndice]->precio_venta);
+            $productos[$posibleIndice]->precio_total =  self::redondearAl100($productos[$posibleIndice]->cantidad * $productos[$posibleIndice]->precio_venta);
         }
         $this->guardarProductos($productos);
+    }
+
+    function redondearAl100($numero) {
+        return round($numero / 100) * 100;
     }
 
     private function buscarIndiceDeProducto(string $codigo, array &$productos)
@@ -196,7 +200,7 @@ class VenderController extends Controller
     {
         $total = 0;
         foreach ($this->obtenerProductos() as $producto) {
-            $total += round($producto->cantidad * $producto->precio_venta);
+            $total += self::redondearAl100($producto->cantidad * $producto->precio_venta);
         }
 
         return view("vender.vender",

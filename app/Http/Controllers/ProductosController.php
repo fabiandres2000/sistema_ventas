@@ -140,4 +140,19 @@ class ProductosController extends Controller
 
         return redirect()->route("productos.index")->with("mensaje", "Producto actualizado");
     }
+
+    public function verificarUnidadProducto(Request $request){
+        $codigo = $request->input('codigo');
+
+        $producto = DB::connection('mysql')->table('productos')
+        ->where('codigo_barras', $codigo)
+        ->first();
+
+        if($producto == null){
+            return 0;
+        }else{
+            return response()->json($producto);
+        }
+
+    }
 }

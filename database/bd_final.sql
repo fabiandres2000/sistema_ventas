@@ -1,6 +1,6 @@
 /*
-SQLyog Community v13.1.7 (64 bit)
-MySQL - 8.0.35 : Database - punto_venta
+SQLyog Community v13.2.0 (64 bit)
+MySQL - 8.0.30 : Database - punto_venta
 *********************************************************************
 */
 
@@ -12,8 +12,6 @@ MySQL - 8.0.35 : Database - punto_venta
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`punto_venta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
 USE `punto_venta`;
 
 /*Table structure for table `abonos_fiados` */
@@ -24,7 +22,7 @@ CREATE TABLE `abonos_fiados` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_cliente` int DEFAULT NULL,
   `valor_abonado` double DEFAULT NULL,
-  `fecha_abono` text COLLATE utf8mb4_unicode_ci,
+  `fecha_abono` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -122,16 +120,16 @@ CREATE TABLE `productos` (
 /*Data for the table `productos` */
 
 insert  into `productos`(`id`,`codigo_barras`,`descripcion`,`categoria`,`precio_compra`,`precio_venta`,`existencia`,`unidad_medida`,`imagen`,`created_at`,`updated_at`) values 
-(10,'papa_sin_lavar','papa sin lavar','Alimentos',1000.00,1200.00,40.00,'Libras','1701299580.jpg','2023-11-29 17:13:00','2023-12-12 16:23:51'),
-(12,'435345345','mayonesa fruco','Alimentos',1000.00,1200.00,30.00,'Unidades','1701299800.jpg','2023-11-29 17:16:40','2023-11-30 10:34:36'),
-(13,'7657567567','salsa de tomate fruco','Alimentos',1000.00,1200.00,28.00,'Unidades','1701299828.jpg','2023-11-29 17:17:08','2023-12-12 17:37:48'),
+(10,'papa_sin_lavar','papa sin lavar','Alimentos',1000.00,1200.00,33.43,'Libras','1701299580.jpg','2023-11-29 17:13:00','2023-12-13 12:31:54'),
+(12,'435345345','mayonesa fruco','Alimentos',1000.00,1200.00,26.00,'Unidades','1701299800.jpg','2023-11-29 17:16:40','2023-12-13 12:26:55'),
+(13,'7657567567','salsa de tomate fruco','Alimentos',1000.00,1200.00,26.00,'Unidades','1701299828.jpg','2023-11-29 17:17:08','2023-12-13 12:31:54'),
 (14,'7657567568','limpido','Aseo',3000.00,3800.00,17.00,'Unidades','1701300016.jpg','2023-11-29 17:20:16','2023-12-12 17:09:10'),
-(15,'7867865345','trapero','Aseo',2000.00,2900.00,9.00,'Unidades','1701300701.jpg','2023-11-29 17:31:41','2023-12-12 17:37:48'),
-(16,'8678768678678','escoba de piso','Aseo',4000.00,5000.00,10.00,'Unidades','1701300744.jpg','2023-11-29 17:32:24','2023-12-12 17:37:48'),
+(15,'7867865345','trapero','Aseo',2000.00,2900.00,8.00,'Unidades','1701300701.jpg','2023-11-29 17:31:41','2023-12-13 12:31:54'),
+(16,'8678768678678','escoba de piso','Aseo',4000.00,5000.00,9.00,'Unidades','1701300744.jpg','2023-11-29 17:32:24','2023-12-13 12:26:55'),
 (17,'979876896','postobon personal','Bebidas',1800.00,2500.00,10.00,'Unidades','1701300797.jpg','2023-11-29 17:33:17','2023-11-30 13:56:02'),
 (18,'345345345','coca cola personal','Bebidas',1800.00,2600.00,15.00,'Unidades','1701300847.jpg','2023-11-29 17:34:07','2023-12-12 17:10:11'),
 (19,'6567657567','soda','Bebidas',1200.00,1500.00,9.00,'Unidades','1701301537.jpg','2023-11-29 17:45:37','2023-12-12 17:37:48'),
-(21,'222222222','guineo verde','Alimentos',1600.00,2000.00,21.23,'Libras','1701361632.jpg','2023-11-30 10:27:12','2023-12-12 17:38:30');
+(21,'222222222','guineo verde','Alimentos',1600.00,2000.00,6.85,'Libras','1701361632.jpg','2023-11-30 10:27:12','2023-12-13 12:35:26');
 
 /*Table structure for table `productos_vendidos` */
 
@@ -150,7 +148,7 @@ CREATE TABLE `productos_vendidos` (
   PRIMARY KEY (`id`),
   KEY `productos_vendidos_id_venta_foreign` (`id_venta`),
   CONSTRAINT `productos_vendidos_id_venta_foreign` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `productos_vendidos` */
 
@@ -174,7 +172,19 @@ insert  into `productos_vendidos`(`id`,`id_venta`,`descripcion`,`codigo_barras`,
 (28,30,'soda','6567657567',1500.00,1.000,'Und','2023-12-12 17:37:48','2023-12-12 17:37:48'),
 (29,30,'trapero','7867865345',2900.00,1.000,'Und','2023-12-12 17:37:48','2023-12-12 17:37:48'),
 (30,30,'escoba de piso','8678768678678',5000.00,2.000,'Und','2023-12-12 17:37:48','2023-12-12 17:37:48'),
-(31,31,'guineo verde','222222222',2000.00,10.000,'Lb','2023-12-12 17:38:30','2023-12-12 17:38:30');
+(31,31,'guineo verde','222222222',2000.00,10.000,'Lb','2023-12-12 17:38:30','2023-12-12 17:38:30'),
+(35,33,'guineo verde','222222222',2000.00,2.657,'Lb','2023-12-13 12:25:38','2023-12-13 12:25:38'),
+(36,33,'mayonesa fruco','435345345',1200.00,2.000,'Und','2023-12-13 12:25:38','2023-12-13 12:25:38'),
+(37,34,'papa sin lavar','papa_sin_lavar',1200.00,2.657,'Lb','2023-12-13 12:26:55','2023-12-13 12:26:55'),
+(38,34,'guineo verde','222222222',2000.00,4.167,'Lb','2023-12-13 12:26:55','2023-12-13 12:26:55'),
+(39,34,'mayonesa fruco','435345345',1200.00,1.000,'Und','2023-12-13 12:26:55','2023-12-13 12:26:55'),
+(40,34,'escoba de piso','8678768678678',5000.00,1.000,'Und','2023-12-13 12:26:55','2023-12-13 12:26:55'),
+(41,34,'salsa de tomate fruco','7657567567',1200.00,1.000,'Und','2023-12-13 12:26:55','2023-12-13 12:26:55'),
+(42,35,'guineo verde','222222222',2000.00,2.657,'Lb','2023-12-13 12:31:54','2023-12-13 12:31:54'),
+(43,35,'papa sin lavar','papa_sin_lavar',1200.00,2.657,'Lb','2023-12-13 12:31:54','2023-12-13 12:31:54'),
+(44,35,'trapero','7867865345',2900.00,1.000,'Und','2023-12-13 12:31:54','2023-12-13 12:31:54'),
+(45,35,'salsa de tomate fruco','7657567567',1200.00,1.000,'Und','2023-12-13 12:31:54','2023-12-13 12:31:54'),
+(46,36,'guineo verde','222222222',2000.00,2.220,'Lb','2023-12-13 12:35:26','2023-12-13 12:35:26');
 
 /*Table structure for table `users` */
 
@@ -211,10 +221,10 @@ CREATE TABLE `ventas` (
   `total_dinero` double DEFAULT NULL,
   `total_fiado` double DEFAULT NULL,
   `total_vueltos` double DEFAULT NULL,
-  `fecha_venta` text COLLATE utf8mb4_unicode_ci,
+  `fecha_venta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `ventas_id_cliente_foreign` (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `ventas` */
 
@@ -228,7 +238,11 @@ insert  into `ventas`(`id`,`created_at`,`updated_at`,`id_cliente`,`total_pagar`,
 (28,'2023-12-12 17:09:10','2023-12-12 17:09:10',1,3800,3800,0,0,'2023-12-12'),
 (29,'2023-12-12 17:10:11','2023-12-12 17:10:11',1,3800,3800,0,0,'2023-12-12'),
 (30,'2023-12-12 17:37:48','2023-12-12 17:37:48',2,18100,18100,0,0,'2023-12-12'),
-(31,'2023-12-12 17:38:30','2023-12-12 17:38:30',1,20000,20000,0,0,'2023-12-12');
+(31,'2023-12-12 17:38:30','2023-12-12 17:38:30',1,20000,20000,0,0,'2023-12-12'),
+(33,'2023-12-13 12:25:38','2023-12-13 12:25:38',1,7700,7700,0,0,'2023-12-13'),
+(34,'2023-12-13 12:26:55','2023-12-13 12:26:55',1,18900,18900,0,0,'2023-12-13'),
+(35,'2023-12-13 12:31:54','2023-12-13 12:31:54',2,12600,12600,0,0,'2023-12-13'),
+(36,'2023-12-13 12:35:26','2023-12-13 12:35:26',1,4400,4400,0,0,'2023-12-13');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

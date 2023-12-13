@@ -40,6 +40,7 @@ Route::middleware("auth")
         Route::delete("/productoDeVenta", "VenderController@quitarProductoDeVenta")->name("quitarProductoDeVenta");
         Route::post("/terminarOCancelarVenta", "VenderController@terminarOCancelarVenta")->name("terminarOCancelarVenta");
         Route::post("/modificarInventarioProducto", "ProductosController@modificarInventarioProducto")->name("modificarInventarioProducto");
+        Route::get("/verificarUnidadProducto", "ProductosController@verificarUnidadProducto")->name("verificarUnidadProducto");
     });
 
 

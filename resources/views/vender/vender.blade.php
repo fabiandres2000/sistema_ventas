@@ -26,7 +26,7 @@
             @include("notificacion")
             <div class="row">
                 <div class="col-lg-6">
-                    <form action="{{route("agregarProductoVenta")}}" method="post">
+                    <form id="tuFormulario" action="{{ route('agregarProductoVenta') }}" onsubmit="return verificarUnidad();" method="post">
                         @csrf
                         <div class="">
                             <label for="codigo"><h1>Código de barras</h1></label>
@@ -284,6 +284,44 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="modalParaPesar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <br>
+            <form action="{{route("agregarProductoVenta")}}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <h2 style="background-color: rgb(255, 208, 0); padding: 5px; width: fit-content;">Producto: <strong id="etiqueta_nombre_peso"></strong></h2>
+                        </div>
+                        <div class="col-lg-7">
+                            <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Precio venta: <strong id="etiqueta_precio_peso"></strong></h2>
+                        </div>
+                    </div>
+                    <input id="codigo_barras_peso" autocomplete="off" required name="codigo" type="hidden"class="form-control">
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label style="font-size: 25px; font-weight: bold" for="cantidad_manual_peso">Peso en libras</label>
+                            <input autofocus style="font-size: 25px; font-weight: bold" required oninput="calcularPrecioPeso(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+                        </div>
+                        <div class="col-lg-6">
+                            <label style="font-size: 25px; font-weight: bold" for="precio_peso">Precio a vender</label>
+                            <input style="font-size: 25px; font-weight: bold" id="precio_peso" name="precio_peso" type="text" class="form-control" placeholder="$0.00">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="volverSeleccionarCategoria()" class="btn btn-danger">Volver</button>
+                    <button type="submit" class="btn btn-success">Agregar Producto</button>
+                </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
     <script>
         function elegirCategoria(valor){
             $.ajax({
@@ -356,6 +394,45 @@
         function volverSeleccionarCategoria(){
             $('#exampleModal2').modal("hide")
             $('#exampleModal').modal("show")
+        }
+
+        function verificarUnidad(){
+            var codigo = document.getElementById('codigo').value;
+            if (codigo === '') {
+                alert('Por favor ingresa un código de barras válido.');
+                return false;
+            }else{
+                $.ajax({
+                    url: '/verificarUnidadProducto?codigo='+codigo,
+                    type: 'GET',
+                    success: function(response) {
+                        if(response.unidad_medida != "Libras" && response.unidad_medida != "Kilos"){
+                            document.getElementById('tuFormulario').submit();
+                        }else{
+                            $('#modalParaPesar').modal("show");
+
+                            precio_seleccionado = response.precio_venta;
+
+                            document.getElementById("etiqueta_precio_peso").innerHTML = response.precio_venta.toLocaleString("en", {
+                                style: "currency",
+                                currency: "COP"
+                            });
+
+                            document.getElementById("codigo_barras_peso").value = response.codigo_barras;
+                            document.getElementById("etiqueta_nombre_peso").innerHTML = response.descripcion;
+                        }
+                    }
+                });
+                return false;
+            }
+        }
+
+        function calcularPrecioPeso(element){
+            document.getElementById("precio_peso").value = redondearAl100(element.value * precio_seleccionado);
+        }
+
+        function redondearAl100(numero) {
+            return Math.round(numero / 100) * 100;
         }
     </script>
 @endsection

@@ -32,7 +32,7 @@
                         <td>{{$producto->codigo_barras}}</td>
                         <td>${{number_format($producto->precio, 2)}}</td>
                         <td>{{$producto->cantidad}}</td>
-                        <td>${{round($producto->cantidad * $producto->precio)}}</td>
+                        <td>${{round(($producto->cantidad * $producto->precio) / 100) * 100}}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -40,11 +40,11 @@
                 <tr>
                     <td colspan="3"></td>
                     <td style="background-color: aquamarine"><strong>Total</strong></td>
-                    <td style="background-color: aquamarine">${{round($total)}}</td>
+                    <td style="background-color: aquamarine">${{round($total / 100) * 100}}</td>
                 </tr>
                 </tfoot>
             </table>
-
+            <br><br><br>
         </div>
     </div>
 @endsection

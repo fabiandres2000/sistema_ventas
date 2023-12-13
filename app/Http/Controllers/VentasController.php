@@ -33,7 +33,7 @@ class VentasController extends Controller
         // DATOS FACTURA        
         $pdf->Ln(5);
         $pdf->Cell(60,4,'Factura Simpl.: F2019-000001',0,1,'');
-        $pdf->Cell(60,4,'Fecha: 28/10/2019',0,1,'');
+        $pdf->Cell(60,4,'Fecha: '.date("d/m/Y"),0,1,'');
         $pdf->Cell(60,4,'Metodo de pago: EFECTIVO',0,1,'');
         
         // COLUMNAS
@@ -53,8 +53,8 @@ class VentasController extends Controller
         foreach ($venta->productos as $producto) {
             $pdf->MultiCell(30,4,$producto->descripcion,0,'L'); 
             $pdf->Cell(35, -5, $producto->cantidad ,0,0,'R');
-            $pdf->Cell(10, -5, EURO.number_format(round($producto->precio), 0, ',', ' '),0,0,'R');
-            $pdf->Cell(15, -5, EURO.number_format(round($producto->cantidad * $producto->precio), 2, ',', ' '),0,0,'R');
+            $pdf->Cell(10, -5, EURO.number_format($producto->precio, 0, ',', ' '),0,0,'R');
+            $pdf->Cell(15, -5, EURO.number_format(self::redondearAl100($producto->cantidad * $producto->precio), 2, ',', ' '),0,0,'R');
             $pdf->Ln(3);
 
             $TOTAL += $producto->cantidad * $producto->precio;
@@ -64,30 +64,19 @@ class VentasController extends Controller
         $pdf->Ln(6);
         $pdf->Cell(60,0,'','T');
         $pdf->Ln(2);    
-        $pdf->Cell(25, 10, 'TOTAL SIN I.V.A.', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, EURO.number_format(round((round($TOTAL,2)/1.21),2), 2, ',', ' '),0,0,'R');
-        $pdf->Ln(3);    
-        $pdf->Cell(25, 10, 'I.V.A. 21%', 0);    
-        $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, EURO.number_format(round((round($TOTAL,2)),2)-round((round(2*3,2)/1.21),2), 2, ',', ' '),0,0,'R');
-        $pdf->Ln(3);    
+        
         $pdf->Cell(25, 10, 'TOTAL', 0);    
         $pdf->Cell(20, 10, '', 0);
-        $pdf->Cell(15, 10, EURO.number_format(round($TOTAL,2), 2, ',', ' '),0,0,'R');
-        
+        $pdf->Cell(15, 10, EURO.number_format(self::redondearAl100($venta->total_pagar), 2, ',', ' '),0,0,'R');
+
+
         // PIE DE PAGINA
         $pdf->Ln(10);
-        $pdf->Cell(60,0,'EL PERIODO DE DEVOLUCIONES',0,1,'C');
+        $pdf->Cell(60,0,'Cliente: '.$venta->cliente->nombre,0,1,'C');
         $pdf->Ln(3);
-        $pdf->Cell(60,0,'CADUCA EL DIA  01/11/2019',0,1,'C');
+        $pdf->Cell(60,0,'Gracias por su compra',0,1,'C');
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
-    }
-
-    public function imprimirTicket(Request $request){
-
-        $venta = Venta::findOrFail($request->get("id"));
 
         $nombreImpresora = env("NOMBRE_IMPRESORA");
         $connector = new WindowsPrintConnector($nombreImpresora);
@@ -122,6 +111,10 @@ class VentasController extends Controller
         $impresora->feed(5);
         $impresora->close();
         return redirect()->back()->with("mensaje", "Ticket impreso");
+    }
+
+    function redondearAl100($numero) {
+        return round($numero / 100) * 100;
     }
 
     /**
