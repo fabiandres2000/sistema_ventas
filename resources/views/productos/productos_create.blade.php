@@ -12,7 +12,7 @@
                         @csrf
                         <div class="form-group">
                             <label class="label">Código de barras</label>
-                            <input required autocomplete="off" name="codigo_barras" class="form-control"
+                            <input autofocus required autocomplete="off" name="codigo_barras" class="form-control"
                                 type="text" placeholder="Código de barras">
                         </div>
                         <div class="form-group">
@@ -46,8 +46,9 @@
                                 <div class="form-group">
                                     <label class="label">Medida</label>
                                     <select name="unidad_medida" id="unidad_medida" class="form-control">
-                                        <option value="Libras">Libras</option>
                                         <option value="Unidades">Unidades</option>
+                                        <option value="Libras">Libras</option>
+                                        <option value="Kilos">Kilos</option>
                                     </select>
                                 </div>
                             </div>

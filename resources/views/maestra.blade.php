@@ -152,6 +152,12 @@
             color: white;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
         }
+
+        .btn_modal {
+            width: 25% !important;
+            height: 70px;
+            font-size: 24px !important;
+        }
     </style>
 </head>
 <body>

@@ -24,7 +24,7 @@
                     </form>
                 </div>
                 <div class="col-md-2" style="display: flex;justify-content: start;align-items: flex-end;">
-                    <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success">Buscar Manualmente</button>
+                    <button onclick="elegirCategoria()" class="btn btn-success">Buscar Manualmente</button>
                 </div>
             </div>
             
@@ -98,68 +98,6 @@
         </div>
     </div>
 
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Selecciona una categoria</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-4" style="margin-bottom: 20px">
-                        <input required type="radio" id="control_01" name="categoria" value="Aseo" >
-                        <label onclick="elegirCategoria('Aseo')" class="lradio" for="control_01">
-                            <img src="/img/aseo.png" style="width: 50px" alt="">
-                            <p>Aseo</p>
-                        </label>
-                    </div>
-                    <div class="col-lg-4" style="margin-bottom: 20px">
-                        <input required type="radio" id="control_02" name="categoria" value="Alimentos">
-                        <label onclick="elegirCategoria('Alimentos')" class="lradio" for="control_02">
-                            <img src="/img/alimentos.png" style="width: 50px" alt="">
-                            <p>Alimentos</p>
-                        </label>
-                    </div>
-                    <div class="col-lg-4" style="margin-bottom: 20px">
-                        <input required type="radio" id="control_03" name="categoria" value="Bebidas">
-                        <label onclick="elegirCategoria('Bebidas')" class="lradio" for="control_03">
-                            <img src="/img/bebidas.png" style="width: 50px" alt="">
-                            <p>Bebidas</p>
-                        </label>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-lg-4" style="margin-bottom: 20px">
-                        <input required type="radio" id="control_05" name="categoria" value="Carnes">
-                        <label onclick="elegirCategoria('Carnes')" class="lradio" for="control_05">
-                            <img src="/img/carne.png" style="width: 50px" alt="">
-                            <p>Carnes</p>
-                        </label>
-                    </div>
-                    <div class="col-lg-4" style="margin-bottom: 20px">
-                        <input required type="radio" id="control_07" name="categoria" value="Farmacia">
-                        <label onclick="elegirCategoria('Farmacia')" class="lradio" for="control_07">
-                            <img src="/img/farmacia.png" style="width: 50px" alt="">
-                            <p>Farmacia</p>
-                        </label>
-                    </div>
-                    <div class="col-lg-4" style="margin-bottom: 20px">
-                        <input required type="radio" id="control_06" name="categoria" value="Otros">
-                        <label onclick="elegirCategoria('Otros')" class="lradio" for="control_06">
-                            <p>Otros</p>
-                        </label>
-                    </div>
-                </div>
-            </div>
-          </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
@@ -167,20 +105,6 @@
             <form action="{{route("agregarProductoVenta")}}" method="post">
                 @csrf
                 <div class="modal-body">
-                    <table id="tabla_productos_vender" style="width: 100%">
-                        <thead>
-                            <tr style="background-color: aqua;">
-                                <th>Imagen</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Disponible</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista_productos" >
-
-                        </tbody>
-                    </table>
-                    <br>
                     <hr>
                     <div class="row">
                         <div class="col-lg-5">
@@ -195,18 +119,31 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <label style="font-size: 25px; font-weight: bold" for="precio">Precio a vender</label>
-                            <input style="font-size: 25px; font-weight: bold" required oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <input autocomplete="off" style="font-size: 25px; font-weight: bold" required oninput="calcularKilos(this)" id="precio" name="precio" type="text" class="form-control" placeholder="precio de venta">
                         </div>
                         <div class="col-lg-6">
-                            <label style="font-size: 25px; font-weight: bold" for="cantidad_manual">Peso en kilos o unidades</label>
-                            <input style="font-size: 25px; font-weight: bold" required oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <label style="font-size: 25px; font-weight: bold" for="cantidad_manual">Peso o Unidades</label>
+                            <input autocomplete="off" style="font-size: 25px; font-weight: bold" required oninput="calcularPrecio(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en o unidades">
                         </div>
                     </div>
-                   
+                    <hr>
+                    <table id="tabla_productos_vender" style="width: 100%">
+                        <thead>
+                            <tr style="background-color: aqua;">
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Disponible</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista_productos" >
+
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="volverSeleccionarCategoria()" class="btn btn-danger">Volver</button>
-                    <button type="submit" class="btn btn-success">Agregar Producto</button>
+                    <button type="submit" class="btn_modal btn btn-success">Agregar Producto</button>
+                    <button type="button" data-dismiss="modal" class="btn_modal btn btn-danger">Cerrar</button>
                 </div>
             </form>
           </div>
@@ -238,21 +175,21 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label style="font-size: 20px" for="">Total a pagar</label>
-                                <input  required name="total_pagar" style="font-size: 20px" class="form-control" type="text" value="{{round($total, 2)}}">
+                                <input autocomplete="off" required name="total_pagar" style="font-size: 20px" class="form-control" type="text" value="{{round($total, 2)}}">
                             </div>
                             <div class="form-group">
                                 <label style="font-size: 20px" for="">Total Cambio</label>
-                                <input required name="total_vueltos" id="vueltos" style="font-size: 20px" class="form-control" type="text">
+                                <input autocomplete="off" required name="total_vueltos" id="vueltos" style="font-size: 20px" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label style="font-size: 20px" for="">Total Dinero</label>
-                                <input required name="total_dinero" oninput="calcularCambio(this, {{$total}})" style="font-size: 20px" class="form-control" type="text">
+                                <input autocomplete="off" required name="total_dinero" oninput="calcularCambio(this, {{$total}})" style="font-size: 20px" class="form-control" type="text">
                             </div>
                             <div class="form-group">
                                 <label style="font-size: 20px" for="">Total Fiado</label>
-                                <input id="fiado" required name="total_fiado" style="font-size: 20px" class="form-control" type="currency">
+                                <input autocomplete="off" id="fiado" required name="total_fiado" style="font-size: 20px" class="form-control" type="currency">
                             </div>
                         </div>
                         <hr>
@@ -291,18 +228,19 @@
                     <br>
                     <div class="row">
                         <div class="col-lg-6">
-                            <label style="font-size: 25px; font-weight: bold" for="cantidad_manual_peso">Peso en libras</label>
-                            <input autofocus style="font-size: 25px; font-weight: bold" required oninput="calcularPrecioPeso(this)" id="cantidad_manual" name="cantidad" type="text" class="form-control" placeholder="peso en libras o unidades">
+                            <label style="font-size: 25px; font-weight: bold" for="cantidad_manual_peso">Peso en libras o kilos</label>
+                            <input autocomplete="off" style="font-size: 25px; font-weight: bold" required oninput="calcularPrecioPeso(this)" id="cantidad_manual_peso" name="cantidad" type="text" class="form-control" placeholder="peso en libras o kilos">
                         </div>
                         <div class="col-lg-6">
                             <label style="font-size: 25px; font-weight: bold" for="precio_peso">Precio a vender</label>
-                            <input style="font-size: 25px; font-weight: bold" id="precio_peso" name="precio_peso" type="text" class="form-control" placeholder="$0.00">
+                            <input autocomplete="off" style="font-size: 25px; font-weight: bold" id="precio_peso" oninput="calcularKilosPeso(this)" name="precio_peso" type="text" class="form-control" placeholder="$0.00">
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button onclick="volverSeleccionarCategoria()" class="btn btn-danger">Volver</button>
-                    <button type="submit" class="btn btn-success">Agregar Producto</button>
+                <div class="modal-footer" style="justify-content: center">
+                    <button type="button" id="obtenerPesoBoton" class="btn_modal btn btn-warning">Obtener Peso</button>
+                    <button type="submit" class="btn_modal btn btn-success">Agregar Producto</button>
+                    <button type="button" data-dismiss="modal" class="btn_modal btn btn-danger">Cerrar</button>
                 </div>
             </form>
           </div>
@@ -310,14 +248,12 @@
     </div>
 
     <script>
-        function elegirCategoria(valor){
+        function elegirCategoria(){
             $.ajax({
-                url: '/productos-categoria?categoria='+valor,
+                url: '/productos-categoria',
                 type: 'GET',
                 success: function(response) {
-                    $('#exampleModal').modal("hide")
-                    $('#exampleModal2').modal("show")
-
+                    $('#exampleModal2').modal("show");
                     var div_lista = document.getElementById("lista_productos");
                     var div = "";
                     id = 123;
@@ -341,6 +277,37 @@
 
                     div_lista.innerHTML = "";
                     div_lista.innerHTML = div;
+
+                    setTimeout(() => {
+                        if ($.fn.DataTable.isDataTable('#tabla_productos_vender')) {
+                            $('#tabla_productos_vender').DataTable().destroy();
+                        }
+
+                        $('#tabla_productos_vender').DataTable({
+                            language: {
+                                "decimal": "",
+                                "emptyTable": "No hay información",
+                                "info": "Mostrando _START_ a _END_ de _TOTAL_ Productos",
+                                "infoEmpty": "Mostrando 0 to 0 of 0 Productos",
+                                "infoFiltered": "(Filtrado de _MAX_ total Productos)",
+                                "infoPostFix": "",
+                                "thousands": ",",
+                                "lengthMenu": "Mostrar _MENU_ Productos",
+                                "loadingRecords": "Cargando...",
+                                "processing": "Procesando...",
+                                "search": "Buscar:",
+                                "zeroRecords": "Sin resultados encontrados",
+                                "paginate": {
+                                    "first": "Primero",
+                                    "last": "Ultimo",
+                                    "next": "Siguiente",
+                                    "previous": "Anterior"
+                                }
+                            },
+                            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]], // Cantidad de productos por página
+                            "pageLength": 5 
+                        });
+                    }, 1000);
                 }
             });
         }
@@ -418,6 +385,12 @@
             document.getElementById("precio_peso").value = redondearAl100(element.value * precio_seleccionado);
         }
 
+        function calcularKilosPeso(element){
+            var numero = (element.value / precio_seleccionado);
+            let numeroRedondeado = numero % 1 !== 0 ? parseFloat(numero.toFixed(3)) : numero;
+            document.getElementById("cantidad_manual_peso").value = numeroRedondeado;
+        }
+
         function redondearAl100(numero) {
             return Math.round(numero / 100) * 100;
         }
@@ -428,6 +401,23 @@
                 $('#modalConfirmarCompra').modal("show")
             }
         }, false);
+
+        function obtenerPeso() {
+            $.ajax({
+                url: '/leer-peso',
+                method: 'GET',
+                dataType: 'json',
+                success: function (datos) {
+                    document.getElementById("cantidad_manual_peso").value = datos;
+                    document.getElementById("precio_peso").value = redondearAl100(datos * precio_seleccionado);
+                },
+                error: function (error) {
+                    console.error('Error al obtener el peso', error);
+                }
+            });
+        }
+
+        $('#obtenerPesoBoton').click(obtenerPeso);
 
     </script>
 @endsection

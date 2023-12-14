@@ -41,6 +41,8 @@ Route::middleware("auth")
         Route::post("/terminarOCancelarVenta", "VenderController@terminarOCancelarVenta")->name("terminarOCancelarVenta");
         Route::post("/modificarInventarioProducto", "ProductosController@modificarInventarioProducto")->name("modificarInventarioProducto");
         Route::get("/verificarUnidadProducto", "ProductosController@verificarUnidadProducto")->name("verificarUnidadProducto");
+    
+        Route::get('/leer-peso', 'BalanzaController@leerPeso');
     });
 
 

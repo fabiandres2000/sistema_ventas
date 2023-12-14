@@ -51,8 +51,9 @@
                                 <div class="form-group">
                                     <label class="label">Medida</label>
                                     <select name="unidad_medida" id="unidad_medida" class="form-control">
-                                        <option {{ $producto->unidad_medida == 'Libras' ? 'selected' : '' }} value="Libras">Libras</option>
                                         <option {{ $producto->unidad_medida == 'Unidades' ? 'selected' : '' }} value="Unidades">Unidades</option>
+                                        <option {{ $producto->unidad_medida == 'Libras' ? 'selected' : '' }} value="Libras">Libras</option>
+                                        <option {{ $producto->unidad_medida == 'Kilos' ? 'selected' : '' }} value="Kilos">Kilos</option>
                                     </select>
                                 </div>
                             </div>

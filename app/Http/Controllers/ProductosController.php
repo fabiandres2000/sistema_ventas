@@ -110,12 +110,8 @@ class ProductosController extends Controller
     }
 
     public function productosCategoria(Request $request){
-        $categoria = $request->input('categoria');
-
         $productos = DB::connection('mysql')->table('productos')
-        ->where("categoria", $categoria)
         ->get();
-        
         return response()->json($productos);
     }
 
