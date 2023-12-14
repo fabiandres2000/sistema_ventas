@@ -6,21 +6,7 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-lg-12 text-right" style="display: flex; justify-content: end">
-                    @if(session("productos") !== null)
-                        <button style="font-size: 23px" data-toggle="modal" data-target="#modalConfirmarCompra" class="btn btn-success">
-                            Terminar venta
-                        </button>                       
-                    @endif
-                    <form style="margin-left: 20px" action="{{route("terminarOCancelarVenta")}}" method="post">
-                        @csrf
-                        @if(session("productos") !== null)
-                            <div class="text-right">
-                                <button style="font-size: 23px" name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
-                                    venta
-                                </button>
-                            </div>
-                        @endif
-                    </form>
+                    
                 </div>
             </div>
             @include("notificacion")
@@ -86,20 +72,21 @@
                         </div>
                     </div>
                     <div class="col-lg-1"></div>
-                    <div class="col-lg-3" style="display: flex; flex-wrap: wrap;">
-                        @php
-                            $elementos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '<i class="fas fa-backspace"></i>'];
-                        @endphp
-                        @for ($i = 0; $i < count($elementos); $i++)
-                            <div style="cursor: pointer; border-radius: 7px; display: flex; justify-content: center; align-items: center;width: 60px; height: 60px; background-color: #44bedc; margin: 10px">
-                                <p style="margin:0px; font-size: 28px; font-weight: bold">{!! $elementos[$i] !!}</p>   
-                            </div>
-                        @endfor
-                        <div>
-                            <div style="cursor: pointer; border-radius: 7px; display: flex; justify-content: center; align-items: center;width: 60px; height: 60px; background-color: #23a127; margin: 10px; color: white">
-                                <p style="margin:0px; font-size: 28px; font-weight: bold"><i class="fas fa-check"></i></p>   
-                            </div>
-                        </div>
+                    <div class="col-lg-3" style="padding-top: 60px">
+                        @if(session("productos") !== null)
+                            <button style="font-size: 23px; height: 100px; width: 80%" data-toggle="modal" data-target="#modalConfirmarCompra" class="btn btn-success">
+                                Terminar <br> venta
+                            </button>   
+                            <br><br>                    
+                        @endif
+                        <form action="{{route("terminarOCancelarVenta")}}" method="post">
+                            @csrf
+                            @if(session("productos") !== null)
+                                <button style="font-size: 23px; height: 100px; width: 80%" name="accion" value="cancelar" type="submit" class="btn btn-danger">
+                                    Cancelar <br> venta
+                                </button>
+                            @endif
+                        </form>
                     </div>
                 </div>
             @else
@@ -434,5 +421,13 @@
         function redondearAl100(numero) {
             return Math.round(numero / 100) * 100;
         }
+
+        document.addEventListener('keydown', (event) => {
+            var keyValue = event.key;
+            if(keyValue == "Shift"){
+                $('#modalConfirmarCompra').modal("show")
+            }
+        }, false);
+
     </script>
 @endsection

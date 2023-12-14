@@ -175,7 +175,7 @@
                 </li>
             @else
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route("home")}}">Inicio&nbsp;<i class="fa fa-home"></i></a>
+                    <a class="nav-link btn btn-info" style="color: white !important;" href="{{route("home")}}">Inicio&nbsp;<i class="fa fa-home"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route("productos.index")}}">Productos&nbsp;<i class="fa fa-box"></i></a>
