@@ -78,6 +78,7 @@ class VentasController extends Controller
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
 
+        /*
         $nombreImpresora = env("NOMBRE_IMPRESORA");
         $connector = new WindowsPrintConnector($nombreImpresora);
         $impresora = new Printer($connector);
@@ -110,6 +111,8 @@ class VentasController extends Controller
         $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
         $impresora->feed(10);
         $impresora->close();
+
+        */
 
         return redirect()->back()->with("mensaje", "Ticket impreso");
     }
@@ -152,7 +155,7 @@ class VentasController extends Controller
         $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
         $impresora->feed(10);
         $impresora->close();
-        return response()->json(["mensaje" => "Ticket de venta impreso correctamente!"]); 
+        return response()->json(["mensaje" => "Ticket de venta impreso correctamente!"]);
     }
 
     function redondearAl100($numero) {

@@ -31,7 +31,7 @@
             <hr>
             @if(session("productos") !== null)
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-9">
                         <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Total: ${{number_format($total, 2)}}</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered">
@@ -51,11 +51,23 @@
                                         <td>{{$producto->codigo_barras}}</td>
                                         <td>{{$producto->descripcion}}</td>
                                         <td>${{number_format($producto->precio_venta, 2)}}</td>
-                                        <td>
-                                          <strong>{{$producto->cantidad}}</strong> {{ $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und") }}
+                                        <td style="text-align: center !important;">
+                                            @if ($producto->unidad_medida == "Unidades")
+                                                <form style="display: flex; align-items: center; justify-content: space-around;" action="{{route("actualizarProductoDeVenta")}}" method="post">
+                                                    @method("post")
+                                                    @csrf
+                                                    <input min="1" autocomplete="off" style="width: 70px; font-size: 18px" class="form-control" name="cantidad" type="number" value="{{$producto->cantidad}}">
+                                                    <strong> {{ $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und") }}</strong>
+                                                    <input type="hidden" name="indice" value="{{$loop->index}}">
+                                                    <input type="hidden" name="codigo" value="{{$producto->codigo_barras}}">
+                                                    <button style="margin-left: 20px" class="boton_tabla btn btn-warning"><i class="fas fa-sync-alt"></i></button>
+                                                </form>
+                                            @else
+                                                <input style="width: 100px; font-size: 18px" class="form-control" disabled type="text" value="{{$producto->cantidad}} {{ $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und") }}">
+                                            @endif
                                         </td>
                                         <td>${{number_format($producto->precio_total, 2)}}</td>
-                                        <td>
+                                        <td style="text-align: center">
                                             <form action="{{route("quitarProductoDeVenta")}}" method="post">
                                                 @method("delete")
                                                 @csrf
@@ -71,10 +83,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-lg-1"></div>
-                    <div class="col-lg-3" style="padding-top: 60px">
+                    <div class="col-lg-3" style="padding-top: 60px; text-align: center">
                         @if(session("productos") !== null)
-                            <button style="font-size: 23px; height: 100px; width: 80%" data-toggle="modal" data-target="#modalConfirmarCompra" class="btn btn-success">
+                            <button style="font-size: 20px; height: 100px; width: 70%" data-toggle="modal" data-target="#modalConfirmarCompra" class="btn btn-success">
                                 Terminar <br> venta
                             </button>   
                             <br><br>                    
@@ -82,7 +93,7 @@
                         <form action="{{route("terminarOCancelarVenta")}}" method="post">
                             @csrf
                             @if(session("productos") !== null)
-                                <button style="font-size: 23px; height: 100px; width: 80%" name="accion" value="cancelar" type="submit" class="btn btn-danger">
+                                <button style="font-size: 20px; height: 100px; width: 70%" name="accion" value="cancelar" type="submit" class="btn btn-danger">
                                     Cancelar <br> venta
                                 </button>
                             @endif

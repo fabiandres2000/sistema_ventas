@@ -38,6 +38,7 @@ Route::middleware("auth")
         Route::get("/vender", "VenderController@index")->name("vender.index");
         Route::post("/productoDeVenta", "VenderController@agregarProductoVenta")->name("agregarProductoVenta");
         Route::delete("/productoDeVenta", "VenderController@quitarProductoDeVenta")->name("quitarProductoDeVenta");
+        Route::post("/actualizarProductoDeVenta", "VenderController@actualizarProductoDeVenta")->name("actualizarProductoDeVenta");
         Route::post("/terminarOCancelarVenta", "VenderController@terminarOCancelarVenta")->name("terminarOCancelarVenta");
         Route::post("/modificarInventarioProducto", "ProductosController@modificarInventarioProducto")->name("modificarInventarioProducto");
         Route::get("/verificarUnidadProducto", "ProductosController@verificarUnidadProducto")->name("verificarUnidadProducto");

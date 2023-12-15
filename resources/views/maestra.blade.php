@@ -158,6 +158,16 @@
             height: 70px;
             font-size: 24px !important;
         }
+
+
+        .boton_tabla {
+            width: 20px;
+            height: 24px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>

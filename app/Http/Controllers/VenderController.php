@@ -209,4 +209,36 @@ class VenderController extends Controller
                 "clientes" => Cliente::all(),
             ]);
     }
+
+
+    public function actualizarProductoDeVenta(Request $request)
+    {
+        $codigo = $request->post("codigo");
+        $indice = $request->post("indice");
+        $cantidad = $request->post("cantidad");
+        
+        $productos = $this->obtenerProductos();
+        $producto = Producto::where("codigo_barras", "=", $codigo)->first();
+
+        if ($productos[$indice]->cantidad + $cantidad > $producto->existencia) {
+            return redirect()->route("vender.index")
+                ->with([
+                    "mensaje" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
+                    "tipo" => "danger"
+                ]);
+        }
+
+        $producto_editar = $productos[$indice];
+        $producto_editar->cantidad = $cantidad;
+        $producto_editar->precio_total = self::redondearAl100($producto_editar->cantidad * $producto_editar->precio_venta);
+        $productos[$indice] = $producto_editar;
+
+        $this->guardarProductos($productos);
+
+        return redirect()->route("vender.index")
+        ->with([
+            "mensaje" => "Cantidad Actualizada correctamente",
+            "tipo" => "success"
+        ]);
+    }
 }
