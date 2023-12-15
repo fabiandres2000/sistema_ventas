@@ -59,7 +59,7 @@
                             <td>{{$venta->cliente}}</td>
                             <td>${{number_format($venta->total_pagar, 2)}}</td>
                             <td style="display: flex; justify-content: space-evenly; align-items: center;">
-                                <a class="btn btn-info" href="{{route("ventas.ticket", ["id"=>$venta->id])}}">
+                                <a type="button" class="btn btn-info"  onclick="ImprimirTicket({{$venta->id}})">
                                     <i class="fa fa-print"></i>
                                 </a>
                             
@@ -107,5 +107,15 @@
             },
             ordering: false
         });
+
+        function ImprimirTicket(id_venta){
+            $.ajax({
+                url: '/imprimir-ticket?id_venta='+id_venta,
+                type: 'GET',
+                success: function(response) {
+                    alert(response.mensaje);
+                }
+            });
+        }
     </script>
 @endsection

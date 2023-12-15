@@ -43,6 +43,8 @@ Route::middleware("auth")
         Route::get("/verificarUnidadProducto", "ProductosController@verificarUnidadProducto")->name("verificarUnidadProducto");
     
         Route::get('/leer-peso', 'BalanzaController@leerPeso');
+
+        Route::get('/imprimir-ticket', 'VentasController@ImprimirTicket');
     });
 
 

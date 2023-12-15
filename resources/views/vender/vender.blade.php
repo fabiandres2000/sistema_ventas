@@ -101,17 +101,21 @@
     <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
-            <br>
             <form action="{{route("agregarProductoVenta")}}" method="post">
                 @csrf
                 <div class="modal-body">
-                    <hr>
                     <div class="row">
-                        <div class="col-lg-5">
-                            <h2 style="background-color: rgb(255, 208, 0); padding: 5px; width: fit-content;">Producto: <strong id="etiqueta_nombre"></strong></h2>
+                        <div class="col-lg-3">
+                            <h2 style="background-color: rgba(255, 208, 0, 0.541); padding: 5px; width: 100%;">Producto: <br><strong id="etiqueta_nombre"></strong></h2>
                         </div>
-                        <div class="col-lg-7">
-                            <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Precio venta: <strong id="etiqueta_precio"></strong></h2>
+                        <div class="col-lg-3">
+                            <h2 style="background-color: rgba(0, 255, 255, 0.377); padding: 5px; width: 100%;">Precio venta: <strong id="etiqueta_precio"></strong></h2>
+                        </div>
+                        <div class="col-lg-3">
+                            <button style="width: 100% !important" type="submit" class="btn_modal btn btn-success">Agregar Producto</button>
+                        </div>
+                        <div class="col-lg-3">
+                            <button style="width: 100% !important" type="button" data-dismiss="modal" class="btn_modal btn btn-danger">Cerrar</button>
                         </div>
                     </div>
                     <input id="codigo_barras" autocomplete="off" required name="codigo" type="hidden"class="form-control">
@@ -127,7 +131,7 @@
                         </div>
                     </div>
                     <hr>
-                    <table id="tabla_productos_vender" style="width: 100%">
+                    <table id="tabla_productos_vender" style="width: 100%; font-size: 16px !important">
                         <thead>
                             <tr style="background-color: aqua;">
                                 <th>Imagen</th>
@@ -140,10 +144,6 @@
 
                         </tbody>
                     </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn_modal btn btn-success">Agregar Producto</button>
-                    <button type="button" data-dismiss="modal" class="btn_modal btn btn-danger">Cerrar</button>
                 </div>
             </form>
           </div>
@@ -218,10 +218,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-5">
-                            <h2 style="background-color: rgb(255, 208, 0); padding: 5px; width: fit-content;">Producto: <strong id="etiqueta_nombre_peso"></strong></h2>
+                            <h2 style="background-color: rgb(243, 221, 122); padding: 5px; width: fit-content;">Producto: <strong id="etiqueta_nombre_peso"></strong></h2>
                         </div>
                         <div class="col-lg-7">
-                            <h2 style="background-color: aqua; padding: 5px; width: fit-content;">Precio venta: <strong id="etiqueta_precio_peso"></strong></h2>
+                            <h2 style="background-color: rgb(183, 255, 255); padding: 5px; width: fit-content;">Precio venta: <strong id="etiqueta_precio_peso"></strong></h2>
                         </div>
                     </div>
                     <input id="codigo_barras_peso" autocomplete="off" required name="codigo" type="hidden"class="form-control">
@@ -263,13 +263,13 @@
                                         '<img src="/imagenes_productos/'+element.imagen+'" style="width: 50px" alt="">'+
                                     '</td>'+
                                     '<td>'+
-                                        '<p style="font-size: 13px">'+element.descripcion+'</p>'+
+                                        '<p style="font-size: 16px">'+element.descripcion+'</p>'+
                                     '</td>'+
                                     '<td>'+
-                                        '<p style="font-size: 13px">'+element.precio_venta+'</p>'+
+                                        '<p style="font-size: 16px">'+element.precio_venta+'</p>'+
                                     '</td>'+
                                     '<td>'+
-                                        '<p style="font-size: 13px">'+element.existencia+'</p>'+
+                                        '<p style="font-size: 16px">'+element.existencia+' <strong>'+element.unidad_medida+'</strong></p>'+
                                     '</td>'+
                                 '</tr>';
                         id++;
@@ -283,7 +283,7 @@
                             $('#tabla_productos_vender').DataTable().destroy();
                         }
 
-                        $('#tabla_productos_vender').DataTable({
+                        var table =  $('#tabla_productos_vender').DataTable({
                             language: {
                                 "decimal": "",
                                 "emptyTable": "No hay información",
@@ -307,7 +307,17 @@
                             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]], // Cantidad de productos por página
                             "pageLength": 5 
                         });
-                    }, 1000);
+
+                        $('#tabla_productos_vender tbody').on( 'click', 'tr', function () {
+                            if ( $(this).hasClass('selected') ) {
+                                $(this).removeClass('selected');
+                            }
+                            else {
+                                table.$('tr.selected').removeClass('selected');
+                                $(this).addClass('selected');
+                            }
+                        });
+                    }, 500);
                 }
             });
         }

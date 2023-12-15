@@ -78,7 +78,6 @@ class VentasController extends Controller
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
 
-        /*
         $nombreImpresora = env("NOMBRE_IMPRESORA");
         $connector = new WindowsPrintConnector($nombreImpresora);
         $impresora = new Printer($connector);
@@ -89,30 +88,71 @@ class VentasController extends Controller
         $impresora->setEmphasis(false);
         $impresora->text("Cliente: ");
         $impresora->text($venta->cliente->nombre . "\n");
-        $impresora->text("\nhttps://parzibyte.me/blog\n");
+        $impresora->text("\nDetalle de la compra\n");
         $impresora->text("\n===============================\n");
         $total = 0;
         foreach ($venta->productos as $producto) {
             $subtotal = $producto->cantidad * $producto->precio;
             $total += $subtotal;
             $impresora->setJustification(Printer::JUSTIFY_LEFT);
-            $impresora->text(sprintf("%.2fx%s\n", $producto->cantidad, $producto->descripcion));
+            $impresora->text(sprintf("%.2f %s x %s\n", $producto->cantidad, $producto->unidad,  $producto->descripcion));
             $impresora->setJustification(Printer::JUSTIFY_RIGHT);
-            $impresora->text('$' . number_format($subtotal, 2) . "\n");
+            $impresora->text('$' . self::redondearAl100($subtotal) . "\n");
         }
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->text("\n===============================\n");
         $impresora->setJustification(Printer::JUSTIFY_RIGHT);
         $impresora->setEmphasis(true);
-        $impresora->text("Total: $" . number_format($total, 2) . "\n");
+        $impresora->text("Total: $" . self::redondearAl100($total) . "\n");
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->setTextSize(1, 1);
         $impresora->text("Gracias por su compra\n");
-        $impresora->text("https://parzibyte.me/blog");
+        $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
         $impresora->feed(10);
         $impresora->close();
+
         return redirect()->back()->with("mensaje", "Ticket impreso");
-        */
+    }
+
+    public function ImprimirTicket(Request $request){
+
+        $idVenta = $request->input("id_venta");
+        
+        $venta = Venta::findOrFail($idVenta);
+
+        $nombreImpresora = env("NOMBRE_IMPRESORA");
+        $connector = new WindowsPrintConnector($nombreImpresora);
+        $impresora = new Printer($connector);
+        $impresora->setJustification(Printer::JUSTIFY_CENTER);
+        $impresora->setEmphasis(true);
+        $impresora->text("Ticket de venta\n");
+        $impresora->text($venta->created_at . "\n");
+        $impresora->setEmphasis(false);
+        $impresora->text("Cliente: ");
+        $impresora->text($venta->cliente->nombre . "\n");
+        $impresora->text("\nDetalle de la compra\n");
+        $impresora->text("\n===============================\n");
+        $total = 0;
+        foreach ($venta->productos as $producto) {
+            $subtotal = $producto->cantidad * $producto->precio;
+            $total += $subtotal;
+            $impresora->setJustification(Printer::JUSTIFY_LEFT);
+            $impresora->text(sprintf("%.2f %s x %s\n", $producto->cantidad, $producto->unidad,  $producto->descripcion));
+            $impresora->setJustification(Printer::JUSTIFY_RIGHT);
+            $impresora->text('$' . self::redondearAl100($subtotal) . "\n");
+        }
+        $impresora->setJustification(Printer::JUSTIFY_CENTER);
+        $impresora->text("\n===============================\n");
+        $impresora->setJustification(Printer::JUSTIFY_RIGHT);
+        $impresora->setEmphasis(true);
+        $impresora->text("Total: $" . self::redondearAl100($total) . "\n");
+        $impresora->setJustification(Printer::JUSTIFY_CENTER);
+        $impresora->setTextSize(1, 1);
+        $impresora->text("Gracias por su compra\n");
+        $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
+        $impresora->feed(10);
+        $impresora->close();
+        return response()->json(["mensaje" => "Ticket de venta impreso correctamente!"]); 
     }
 
     function redondearAl100($numero) {
