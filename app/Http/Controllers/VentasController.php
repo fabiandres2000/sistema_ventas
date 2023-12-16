@@ -22,7 +22,10 @@ class VentasController extends Controller
         $pdf->AddPage();
 
         $pdf->SetFont('Helvetica','',12);
-        $pdf->Cell(60,4,'Lacodigoteca.com',0,1,'C');
+        $pdf->Cell(60,4,"Proviciones Carlos Andres",0,1,'C');
+        $pdf->Cell(60,4,"NIT 12435619",0,1,'C');
+        $pdf->Cell(60,4,"CRA 15 #13C - 66",0,1,'C');
+        $pdf->Cell(60,4,"Brr. Alfonso Lopez",0,1,'C');
         $pdf->SetFont('Helvetica','',8);
         $pdf->Cell(60,4,'C.I.F.: 01234567A',0,1,'C');
         $pdf->Cell(60,4,'C/ Arturo Soria, 1',0,1,'C');
@@ -32,7 +35,6 @@ class VentasController extends Controller
         
         // DATOS FACTURA        
         $pdf->Ln(5);
-        $pdf->Cell(60,4,'Factura Simpl.: F2019-000001',0,1,'');
         $pdf->Cell(60,4,'Fecha: '.date("d/m/Y"),0,1,'');
         $pdf->Cell(60,4,'Metodo de pago: EFECTIVO',0,1,'');
         
@@ -78,13 +80,17 @@ class VentasController extends Controller
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
 
-        /*
+        
         $nombreImpresora = env("NOMBRE_IMPRESORA");
         $connector = new WindowsPrintConnector($nombreImpresora);
         $impresora = new Printer($connector);
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->setEmphasis(true);
         $impresora->text("Ticket de venta\n");
+        $impresora->text("Proviciones Carlos Andres\n");
+        $impresora->text("NIT 12435619\n");
+        $impresora->text("CRA 15 #13C - 66\n");
+        $impresora->text("Brr. Alfonso Lopez\n");
         $impresora->text($venta->created_at . "\n");
         $impresora->setEmphasis(false);
         $impresora->text("Cliente: ");
@@ -112,7 +118,6 @@ class VentasController extends Controller
         $impresora->feed(10);
         $impresora->close();
 
-        */
 
         return redirect()->back()->with("mensaje", "Ticket impreso");
     }
@@ -129,6 +134,10 @@ class VentasController extends Controller
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->setEmphasis(true);
         $impresora->text("Ticket de venta\n");
+        $impresora->text("Proviciones Carlos Andres\n");
+        $impresora->text("NIT 12435619\n");
+        $impresora->text("CRA 15 #13C - 66\n");
+        $impresora->text("Brr. Alfonso Lopez\n");
         $impresora->text($venta->created_at . "\n");
         $impresora->setEmphasis(false);
         $impresora->text("Cliente: ");
