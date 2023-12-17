@@ -58,7 +58,7 @@ class ProductosController extends Controller
         $producto->imagen = $imageName;
         $producto->saveOrFail();
 
-        return redirect()->route("productos.index")->with("mensaje", "Producto guardado");
+        return redirect()->route("productos.create");
     }
 
     /**
