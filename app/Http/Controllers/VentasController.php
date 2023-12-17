@@ -80,7 +80,7 @@ class VentasController extends Controller
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
 
-        if(count($venta->productos) >= 54){
+        if(count($venta->productos) >= 4){
             $nombreImpresora = env("NOMBRE_IMPRESORA");
             $connector = new WindowsPrintConnector($nombreImpresora);
             $impresora = new Printer($connector);
