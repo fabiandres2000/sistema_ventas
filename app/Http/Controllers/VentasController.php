@@ -13,7 +13,7 @@ use App\Cliente;
 class VentasController extends Controller
 {
 
-    public function ticket($idVenta)
+    public function ticket($idVenta, $imprimir_factura)
     {
         $venta = Venta::findOrFail($idVenta);
 
@@ -80,7 +80,7 @@ class VentasController extends Controller
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
 
-        if(count($venta->productos) >= 4){
+        if($imprimir_factura == "si"){
             $nombreImpresora = env("NOMBRE_IMPRESORA");
             $connector = new WindowsPrintConnector($nombreImpresora);
             $impresora = new Printer($connector);

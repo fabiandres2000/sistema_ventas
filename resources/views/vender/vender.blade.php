@@ -203,6 +203,15 @@
                                 <input autocomplete="off" id="fiado" required name="total_fiado" style="font-size: 20px" class="form-control" type="currency">
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Imprimir factura</label>
+                                <select name="imprimir_factura" id="imprimir_factura" class="form-control">
+                                    <option value="si">si</option>
+                                    <option value="no">no</option>
+                                </select>
+                            </div>
+                        </div>
                         <hr>
                         <div class="col-lg-12">
                             <div class="text-right">

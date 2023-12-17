@@ -32,6 +32,7 @@ class VenderController extends Controller
         $venta->total_dinero =  $request->input('total_dinero');
         $venta->total_fiado =  $request->input('total_fiado');
         $venta->total_vueltos =  $request->input('total_vueltos');
+        $imprimir_factura = $request->input("imprimir_factura");
         $venta->fecha_venta = date("Y-m-d");
         $venta->saveOrFail();
 
@@ -63,7 +64,7 @@ class VenderController extends Controller
         }
 
         $objeto = new VentasController();
-        $myVariable = $objeto->ticket($idVenta);
+        $myVariable = $objeto->ticket($idVenta, $imprimir_factura);
 
         $this->vaciarProductos();
         return redirect()
