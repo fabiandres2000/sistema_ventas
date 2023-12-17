@@ -24,7 +24,7 @@ class VentasController extends Controller
         $pdf->SetFont('Helvetica','',12);
         $pdf->Cell(60,4,"Proviciones Carlos Andres",0,1,'C');
         $pdf->Cell(60,4,"NIT 12435619",0,1,'C');
-        $pdf->Cell(60,4,"CRA 15 #13C - 66",0,1,'C');
+        $pdf->Cell(60,4,"CRA 15 #13B Bis - 62",0,1,'C');
         $pdf->Cell(60,4,"Brr. Alfonso Lopez",0,1,'C');
         $pdf->SetFont('Helvetica','',8);
         $pdf->Cell(60,4,'C.I.F.: 01234567A',0,1,'C');
@@ -89,7 +89,7 @@ class VentasController extends Controller
             $impresora->text("Ticket de venta\n");
             $impresora->text("Proviciones Carlos Andres\n");
             $impresora->text("NIT 12435619\n");
-            $impresora->text("CRA 15 #13C - 66\n");
+            $impresora->text("CRA 15 #13B Bis - 62\n");
             $impresora->text("Brr. Alfonso Lopez\n");
             $impresora->text($venta->created_at . "\n");
             $impresora->setEmphasis(false);
@@ -136,7 +136,7 @@ class VentasController extends Controller
         $impresora->text("Ticket de venta\n");
         $impresora->text("Proviciones Carlos Andres\n");
         $impresora->text("NIT 12435619\n");
-        $impresora->text("CRA 15 #13C - 66\n");
+        $impresora->text("CRA 15 #13B Bis - 62\n");
         $impresora->text("Brr. Alfonso Lopez\n");
         $impresora->text($venta->created_at . "\n");
         $impresora->setEmphasis(false);
