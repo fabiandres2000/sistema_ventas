@@ -80,46 +80,46 @@ class VentasController extends Controller
         
         $pdf->Output('F', 'tickets/ticket_venta_'.$idVenta.'.pdf');
 
-        
-        $nombreImpresora = env("NOMBRE_IMPRESORA");
-        $connector = new WindowsPrintConnector($nombreImpresora);
-        $impresora = new Printer($connector);
-        $impresora->setJustification(Printer::JUSTIFY_CENTER);
-        $impresora->setEmphasis(true);
-        $impresora->text("Ticket de venta\n");
-        $impresora->text("Proviciones Carlos Andres\n");
-        $impresora->text("NIT 12435619\n");
-        $impresora->text("CRA 15 #13C - 66\n");
-        $impresora->text("Brr. Alfonso Lopez\n");
-        $impresora->text($venta->created_at . "\n");
-        $impresora->setEmphasis(false);
-        $impresora->text("Cliente: ");
-        $impresora->text($venta->cliente->nombre . "\n");
-        $impresora->text("\nDetalle de la compra\n");
-        $impresora->text("\n===============================\n");
-        $total = 0;
-        foreach ($venta->productos as $producto) {
-            $subtotal = $producto->cantidad * $producto->precio;
-            $total += $subtotal;
-            $impresora->setJustification(Printer::JUSTIFY_LEFT);
-            $impresora->text(sprintf("%.2f %s x %s\n", $producto->cantidad, $producto->unidad,  $producto->descripcion));
+        if(count($venta->productos) >= 54){
+            $nombreImpresora = env("NOMBRE_IMPRESORA");
+            $connector = new WindowsPrintConnector($nombreImpresora);
+            $impresora = new Printer($connector);
+            $impresora->setJustification(Printer::JUSTIFY_CENTER);
+            $impresora->setEmphasis(true);
+            $impresora->text("Ticket de venta\n");
+            $impresora->text("Proviciones Carlos Andres\n");
+            $impresora->text("NIT 12435619\n");
+            $impresora->text("CRA 15 #13C - 66\n");
+            $impresora->text("Brr. Alfonso Lopez\n");
+            $impresora->text($venta->created_at . "\n");
+            $impresora->setEmphasis(false);
+            $impresora->text("Cliente: ");
+            $impresora->text($venta->cliente->nombre . "\n");
+            $impresora->text("\nDetalle de la compra\n");
+            $impresora->text("\n===============================\n");
+            $total = 0;
+            foreach ($venta->productos as $producto) {
+                $subtotal = $producto->cantidad * $producto->precio;
+                $total += $subtotal;
+                $impresora->setJustification(Printer::JUSTIFY_LEFT);
+                $impresora->text(sprintf("%.2f %s x %s\n", $producto->cantidad, $producto->unidad,  $producto->descripcion));
+                $impresora->setJustification(Printer::JUSTIFY_RIGHT);
+                $impresora->text('$' . self::redondearAl100($subtotal) . "\n");
+            }
+            $impresora->setJustification(Printer::JUSTIFY_CENTER);
+            $impresora->text("\n===============================\n");
             $impresora->setJustification(Printer::JUSTIFY_RIGHT);
-            $impresora->text('$' . self::redondearAl100($subtotal) . "\n");
+            $impresora->setEmphasis(true);
+            $impresora->text("Total: $" . self::redondearAl100($total) . "\n");
+            $impresora->setJustification(Printer::JUSTIFY_CENTER);
+            $impresora->setTextSize(1, 1);
+            $impresora->text("Gracias por su compra\n");
+            $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
+            $impresora->feed(10);
+            $impresora->close();
         }
-        $impresora->setJustification(Printer::JUSTIFY_CENTER);
-        $impresora->text("\n===============================\n");
-        $impresora->setJustification(Printer::JUSTIFY_RIGHT);
-        $impresora->setEmphasis(true);
-        $impresora->text("Total: $" . self::redondearAl100($total) . "\n");
-        $impresora->setJustification(Printer::JUSTIFY_CENTER);
-        $impresora->setTextSize(1, 1);
-        $impresora->text("Gracias por su compra\n");
-        $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
-        $impresora->feed(10);
-        $impresora->close();
 
-
-        return redirect()->back()->with("mensaje", "Ticket impreso");
+        return true;
     }
 
     public function ImprimirTicket(Request $request){
