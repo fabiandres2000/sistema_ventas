@@ -6,7 +6,10 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-lg-3"><h1>Productos <i class="fa fa-box"></i></h1></div>
-                <div class="col-lg-9 text-right"><a style="font-size: 23px" href="{{route("productos.create")}}" class="btn btn-success mb-2">Registrar Producto</a></div>
+                <div class="col-lg-7 text-right"><a style="font-size: 20px" href="{{route("productos.create")}}" class="btn btn-success mb-2">Registrar Producto</a></div>
+                <div class="col-lg-2 text-right">
+                    <button style="font-size: 20px" class="btn btn-primary mb-2" id="pdf">Exportar a PDF</button>
+                </div>
             </div>
             
            
@@ -114,17 +117,10 @@
 
     <script>
 
-        function seleccionarProducto(nombre, item, precio_compra, precio_venta, existencia){
-            $('#modalInventario').modal("show")
-
-            document.getElementById("nombre_producto").innerHTML = nombre;
-            document.getElementById("precio_compra_producto").value = precio_compra;
-            document.getElementById("precio_venta_producto").value = precio_venta;
-            document.getElementById("existencia_producto").value = existencia;
-            document.getElementById("codigo_producto").value = item;
-        }
-
-        $('#tabla_productos').DataTable({
+        $(document).ready(function () {
+            var table = $('#tabla_productos').DataTable({
+                dom: 'Bfrtip',
+                buttons: ['pdf'],
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
@@ -146,5 +142,20 @@
                     }
                 }
             });
+
+            $('#pdf').on('click', function () {
+                table.button('0').trigger();
+            });
+        });
+
+        function seleccionarProducto(nombre, item, precio_compra, precio_venta, existencia){
+            $('#modalInventario').modal("show")
+
+            document.getElementById("nombre_producto").innerHTML = nombre;
+            document.getElementById("precio_compra_producto").value = precio_compra;
+            document.getElementById("precio_venta_producto").value = precio_venta;
+            document.getElementById("existencia_producto").value = existencia;
+            document.getElementById("codigo_producto").value = item;
+        }
     </script>
 @endsection

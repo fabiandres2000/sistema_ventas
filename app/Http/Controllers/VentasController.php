@@ -116,6 +116,7 @@ class VentasController extends Controller
             $impresora->text("Gracias por su compra\n");
             $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
             $impresora->feed(10);
+            $impresora->pulse();
             $impresora->close();
         }
 
@@ -163,6 +164,7 @@ class VentasController extends Controller
         $impresora->text("Gracias por su compra\n");
         $impresora->text("\nVentSOFT By Ing. Fabian Quintero\n");
         $impresora->feed(10);
+        $impresora->pulse();
         $impresora->close();
         return response()->json(["mensaje" => "Ticket de venta impreso correctamente!"]);
     }
