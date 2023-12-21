@@ -225,7 +225,7 @@
         <ul class="navbar-nav ml-auto">
             @auth
                 <li style="margin-right: 15px" class="nav-item">
-                    <a style="color: #fff" href="{{route("logout")}}" class="nav-link btn btn-warning">
+                    <a style="color: #fff" href="{{route("productos.alert")}}" class="nav-link btn btn-warning">
                        Productos en alerta <i class="fas fa-exclamation-triangle"></i>
                     </a>
                 </li>

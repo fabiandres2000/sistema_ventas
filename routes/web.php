@@ -46,6 +46,8 @@ Route::middleware("auth")
         Route::get('/leer-peso', 'BalanzaController@leerPeso');
 
         Route::get('/imprimir-ticket', 'VentasController@ImprimirTicket');
+
+        Route::get("/productos-alert", "ProductosController@alert")->name("productos.alert");
     });
 
 

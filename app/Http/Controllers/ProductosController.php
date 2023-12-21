@@ -151,4 +151,9 @@ class ProductosController extends Controller
         }
 
     }
+
+
+    public function alert(){
+        return view("productos.productos_alert", ["productos" =>  Producto::where('existencia', '<', 10)->get()]);
+    }
 }
