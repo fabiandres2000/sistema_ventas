@@ -220,6 +220,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route("clientes.index")}}">Clientes&nbsp;<i class="fa fa-users"></i></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route("compras.index")}}">Compras&nbsp;<i class="fas fa-money-bill-alt"></i></a>
+                </li>
             @endguest
         </ul>
         <ul class="navbar-nav ml-auto">

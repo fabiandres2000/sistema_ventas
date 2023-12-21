@@ -44,10 +44,13 @@ Route::middleware("auth")
         Route::get("/verificarUnidadProducto", "ProductosController@verificarUnidadProducto")->name("verificarUnidadProducto");
     
         Route::get('/leer-peso', 'BalanzaController@leerPeso');
-
         Route::get('/imprimir-ticket', 'VentasController@ImprimirTicket');
-
         Route::get("/productos-alert", "ProductosController@alert")->name("productos.alert");
+       
+        Route::get("/compras", "ComprasController@index")->name("compras.index");
+        Route::post("/registrar-compra", "ComprasController@guardarCompra")->name("compras.guardarCompra");
+        Route::post("/compras-eliminar", "ComprasController@eliminarCompra")->name("compras.eliminar");
+    
     });
 
 
