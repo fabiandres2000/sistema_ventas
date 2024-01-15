@@ -156,7 +156,7 @@ class VenderController extends Controller
             if ($cantidad <= $producto->existencia) {
                 $producto->cantidad = $cantidad;
                 $producto->precio_total = self::redondearAl100($producto->cantidad * $producto->precio_venta);
-                array_push($productos, $producto);
+                array_unshift($productos, $producto);
             }else{
                 return redirect()->route("vender.index")
                 ->with([
