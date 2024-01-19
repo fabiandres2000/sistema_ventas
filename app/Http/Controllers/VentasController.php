@@ -192,13 +192,35 @@ class VentasController extends Controller
             $totalVendido += $item->total_pagar;
         }
 
-        $fiados = Cliente::join("fiados", "clientes.id", "=", "fiados.id_cliente")
-        ->sum('fiados.total_fiado');
+        $fiado = 0;
+        $abonado = 0;
 
-        $abonado = Cliente::join("abonos_fiados", "clientes.id", "=", "abonos_fiados.id_cliente")
-        ->sum("abonos_fiados.valor_abonado");
+        $resultado = Cliente::join("fiados", "clientes.id", "=", "fiados.id_cliente")
+        ->selectRaw("clientes.*, SUM(fiados.total_fiado) as total_fiado")
+        ->groupBy('clientes.id')
+        ->get();
 
-        $totalFiado = $fiados - $abonado;
+
+        foreach ($resultado as $item) {
+            $abonado_cliente = Cliente::join("abonos_fiados", "clientes.id", "=", "abonos_fiados.id_cliente")
+            ->selectRaw("clientes.id, SUM(abonos_fiados.valor_abonado) as total_abonado")
+            ->where("clientes.id", $item->id)
+            ->groupBy('clientes.id')
+            ->get();
+
+            if(count($abonado_cliente) == 0){
+                $total_abonado = 0;
+            }else{
+                $total_abonado = (double) $abonado_cliente[0]->total_abonado;
+            }
+
+            $abonado = $abonado + $total_abonado;
+            $fiado = $fiado + $item->total_fiado;
+
+        }
+      
+        $totalFiado = $fiado - $abonado;
+
 
         $hoy = date("Y-m-d");
         $totalVendidoHoy = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
