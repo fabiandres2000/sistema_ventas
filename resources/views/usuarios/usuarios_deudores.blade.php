@@ -36,9 +36,9 @@
                             <button onclick="seleccionarCliente({{$cliente->id}}, '{{$cliente->nombre}}', {{$cliente->total_deuda}})" data-toggle="modal" data-target="#modalAbonar" class="btn btn-success">
                                 Abonar <i class="fas fa-hand-holding-usd"></i>
                             </button>
-                            <button class="btn btn-warning">
+                            <a href="/info-deuda?id_cliente={{$cliente->id}}" class="btn btn-warning">
                                 Información <i class="fa fa-info"></i>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 @endforeach
