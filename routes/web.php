@@ -51,6 +51,9 @@ Route::middleware("auth")
         Route::post("/registrar-compra", "ComprasController@guardarCompra")->name("compras.guardarCompra");
         Route::post("/compras-eliminar", "ComprasController@eliminarCompra")->name("compras.eliminar");
     
+        Route::get("/info-deuda", "UserController@infoDeuda")->name("usuarios.infoDeuda");
+        Route::get("/imprimir-deuda", "UserController@ImprimirDeuda")->name("usuarios.ImprimirDeuda");
+
     });
 
 
