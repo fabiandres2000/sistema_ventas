@@ -283,6 +283,7 @@ class UserController extends Controller
         $impresora->text($resultado->nombre . "\n");
         $impresora->text("\nDetalle de la deuda\n");
         foreach ($facturas_deudas as $venta) {
+            $impresora->setJustification(Printer::JUSTIFY_CENTER);
             $impresora->text("\n===============================\n");
             $impresora->text("\nFactura #".$venta->id."\n");
             $impresora->text("\nFecha Factura #".$venta->fecha_venta."\n");
@@ -296,11 +297,10 @@ class UserController extends Controller
                 $impresora->setJustification(Printer::JUSTIFY_RIGHT);
                 $impresora->text('$' . self::redondearAl100($subtotal) . "\n");
             }
-            $impresora->setJustification(Printer::JUSTIFY_CENTER);
-            $impresora->text("\n===============================\n");
             $impresora->setJustification(Printer::JUSTIFY_RIGHT);
             $impresora->setEmphasis(true);
             $impresora->text("Total Factura: $" . self::redondearAl100($total) . "\n");
+            $impresora->text("Total fiado Factura: $" . self::redondearAl100($venta->total_fiado) . "\n");
         }
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->text("\n======== Deuda Total ============\n");
