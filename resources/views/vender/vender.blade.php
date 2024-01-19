@@ -207,8 +207,8 @@
                             <div class="form-group">
                                 <label style="font-size: 20px" for="">Imprimir factura</label>
                                 <select name="imprimir_factura" id="imprimir_factura" class="form-control">
-                                    <option value="si">si</option>
                                     <option value="no">no</option>
+                                    <option value="si">si</option>
                                 </select>
                             </div>
                         </div>

@@ -22,7 +22,7 @@ class VentasController extends Controller
         $pdf->AddPage();
 
         $pdf->SetFont('Helvetica','',12);
-        $pdf->Cell(60,4,"Proviciones Carlos Andres",0,1,'C');
+        $pdf->Cell(60,4,"Provisiones Carlos Andres",0,1,'C');
         $pdf->Cell(60,4,"NIT 12435619",0,1,'C');
         $pdf->Cell(60,4,"CRA 15 #13B Bis - 62",0,1,'C');
         $pdf->Cell(60,4,"Brr. Alfonso Lopez",0,1,'C');
@@ -87,7 +87,7 @@ class VentasController extends Controller
             $impresora->setJustification(Printer::JUSTIFY_CENTER);
             $impresora->setEmphasis(true);
             $impresora->text("Ticket de venta\n");
-            $impresora->text("Proviciones Carlos Andres\n");
+            $impresora->text("Provisiones Carlos Andres\n");
             $impresora->text("NIT 12435619\n");
             $impresora->text("CRA 15 #13B Bis - 62\n");
             $impresora->text("Brr. Alfonso Lopez\n");
@@ -135,7 +135,7 @@ class VentasController extends Controller
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->setEmphasis(true);
         $impresora->text("Ticket de venta\n");
-        $impresora->text("Proviciones Carlos Andres\n");
+        $impresora->text("Provisiones Carlos Andres\n");
         $impresora->text("NIT 12435619\n");
         $impresora->text("CRA 15 #13B Bis - 62\n");
         $impresora->text("Brr. Alfonso Lopez\n");
