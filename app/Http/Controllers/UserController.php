@@ -272,7 +272,7 @@ class UserController extends Controller
         $impresora = new Printer($connector);
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->setEmphasis(true);
-        $impresora->text("Ticket de venta\n");
+        $impresora->text("Ticket de Deuda\n");
         $impresora->text("Provisiones Carlos Andres\n");
         $impresora->text("NIT 12435619\n");
         $impresora->text("CRA 15 #13B Bis - 62\n");
