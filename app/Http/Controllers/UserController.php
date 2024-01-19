@@ -29,6 +29,7 @@ class UserController extends Controller
         ->get();
 
         $clientes_deben = [];
+        $total_fiado = 0;
 
         foreach ($resultado as $item) {
             $abonado = Cliente::join("abonos_fiados", "clientes.id", "=", "abonos_fiados.id_cliente")
@@ -46,12 +47,14 @@ class UserController extends Controller
             $item->total_abonado = $total_abonado;
             $item->total_deuda = $item->total_fiado - $item->total_abonado;
 
-            if($item->total_deuda > 1){
+            
+            if($item->total_deuda > 0){
+                $total_fiado += $item->total_deuda;
                 array_push($clientes_deben, $item);
             }
         }
 
-        return view("usuarios.usuarios_deudores", ["clientes_deudores" => $clientes_deben]);
+        return view("usuarios.usuarios_deudores", ["clientes_deudores" => $clientes_deben, "total_fiado" => $total_fiado]);
     }
 
     public function abonar(Request $request)

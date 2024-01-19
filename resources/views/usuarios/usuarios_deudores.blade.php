@@ -4,8 +4,15 @@
 <br>
 <div class="row">
     <div class="col-12">
-        <h1>Clientes Deudores  <i class="fas fa-hand-holding-usd"></i></h1>
-        <hr>
+        <div class="row">
+            <div class="col-lg-7">
+                <h1>Clientes Deudores  <i class="fas fa-hand-holding-usd"></i></h1>
+            </div>
+            <div class="col-lg-5">
+                <h1 style="color: red; font-weight: bold">Deuda total:  ${{number_format($total_fiado, 2)}}</h1>
+            </div>
+        </div>
+               <hr>
         @include("notificacion")
         <div class="table-responsive">
             <table id="tabla_deudores" class="table table-bordered">
@@ -40,6 +47,10 @@
         </div>
     </div>
 </div>
+<br>
+<br>
+<br>
+<br>
 
 <div class="modal fade" id="modalAbonar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -82,6 +93,7 @@
 
 <script>
     $('#tabla_deudores').DataTable({
+        "order": [[3, 'desc']],
         language: {
             "decimal": "",
             "emptyTable": "No hay información",
