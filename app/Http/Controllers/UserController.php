@@ -285,6 +285,7 @@ class UserController extends Controller
         foreach ($facturas_deudas as $venta) {
             $impresora->text("\n===============================\n");
             $impresora->text("\nFactura #".$venta->id."\n");
+            $impresora->text("\nFecha Factura #".$venta->fecha_venta."\n");
             $impresora->text("\n");
             $total = 0;
             foreach ($venta->productos as $producto) {
