@@ -110,6 +110,7 @@ class VentasController extends Controller
             $impresora->text("\n===============================\n");
             $impresora->setJustification(Printer::JUSTIFY_RIGHT);
             $impresora->setEmphasis(true);
+            $impresora->setTextSize(3, 3); 
             $impresora->text("Total: $" . self::redondearAl100($total) . "\n");
             $impresora->setJustification(Printer::JUSTIFY_CENTER);
             $impresora->setTextSize(1, 1);
@@ -158,6 +159,7 @@ class VentasController extends Controller
         $impresora->text("\n===============================\n");
         $impresora->setJustification(Printer::JUSTIFY_RIGHT);
         $impresora->setEmphasis(true);
+        $impresora->setTextSize(3, 3);
         $impresora->text("Total: $" . self::redondearAl100($total) . "\n");
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->setTextSize(1, 1);
