@@ -305,6 +305,7 @@ class UserController extends Controller
         $impresora->setJustification(Printer::JUSTIFY_CENTER);
         $impresora->text("\n======== Deuda Total ============\n");
         $impresora->setJustification(Printer::JUSTIFY_LEFT);
+        $impresora->setTextSize(3, 3);
         $impresora->text(sprintf("Total fiado $ %.2f\n", self::redondearAl100($resultado->total_fiado)));
         $impresora->text(sprintf("Total Abonado $ %.2f\n", self::redondearAl100($total_abonado)));
         $impresora->text(sprintf("Total Deuda Restante $ %.2f\n", self::redondearAl100($total_deuda)));
