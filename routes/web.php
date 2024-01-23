@@ -54,6 +54,8 @@ Route::middleware("auth")
         Route::get("/info-deuda", "UserController@infoDeuda")->name("usuarios.infoDeuda");
         Route::get("/imprimir-deuda", "UserController@ImprimirDeuda")->name("usuarios.ImprimirDeuda");
 
+        Route::get("/productos-carrito", "VenderController@obtenerProductosCarritoJson")->name("vender.obtenerProductosCarritoJson");
+
     });
 
 
