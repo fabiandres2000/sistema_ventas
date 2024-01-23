@@ -7,14 +7,11 @@ use App\Producto;
 use App\ProductoVendido;
 use App\Venta;
 use Illuminate\Http\Request;
-
 use App\Http\Controllers\VentasController;
-
 use DB;
 
 class VenderController extends Controller
 {
-
     public function terminarOCancelarVenta(Request $request)
     {
         if ($request->input("accion") == "terminar") {
@@ -43,9 +40,7 @@ class VenderController extends Controller
         $idVenta = $venta->id;
         $productos = $this->obtenerProductos();
 
-        // Recorrer carrito de compras
         foreach ($productos as $producto) {
-            // El producto que se vende...
             $productoVendido = new ProductoVendido();
             $productoVendido->fill([
                 "id_venta" => $idVenta,
@@ -55,9 +50,8 @@ class VenderController extends Controller
                 "cantidad" => $producto->cantidad,
                 "unidad" => $producto->unidad_medida== "Kilos" ? "Kg" : ($producto->unidad_medida == "Libras" ? "Lb" : "Und")
             ]);
-            // Lo guardamos
             $productoVendido->saveOrFail();
-            // Y restamos la existencia del original
+
             $productoActualizado = Producto::find($producto->id);
             $productoActualizado->existencia -= $productoVendido->cantidad;
             $productoActualizado->saveOrFail();
@@ -67,9 +61,15 @@ class VenderController extends Controller
         $myVariable = $objeto->ticket($idVenta, $imprimir_factura);
 
         $this->vaciarProductos();
-        return redirect()
-            ->route("vender.index")
-            ->with("mensaje", "Venta terminada");
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Venta terminada',
+            'data' => [
+                'venta_id' => $idVenta,
+                'ticket' => $myVariable,
+            ],
+        ]);
     }
 
     public function guardarFiado($id_cliente, $id_factura, $total_fiado){
@@ -106,9 +106,11 @@ class VenderController extends Controller
     public function cancelarVenta()
     {
         $this->vaciarProductos();
-        return redirect()
-            ->route("vender.index")
-            ->with("mensaje", "Venta cancelada");
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Venta cancelada',
+        ]);
     }
 
     public function quitarProductoDeVenta(Request $request)
@@ -120,62 +122,68 @@ class VenderController extends Controller
         if(count($productos) == 0){
             $this->vaciarProductos();
         }
-        return redirect()
-            ->route("vender.index");
+
+        return redirect()->route("vender.index");
     }
 
     public function agregarProductoVenta(Request $request)
-    {
+    {        
         $codigo = $request->post("codigo");
         $cantidad = $request->post("cantidad");
         $producto = Producto::where("codigo_barras", "=", $codigo)->first();
         if (!$producto) {
-            return redirect()
-                ->route("vender.index")
-                ->with("mensaje", "Producto no encontrado");
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Producto no encontrado',
+            ]);
         }
-        $this->agregarProductoACarrito($producto, $cantidad);
-        return redirect()
-            ->route("vender.index");
+        
+        $respuesta = $this->agregarProductoACarrito($producto, $cantidad);
+
+        return $respuesta;
     }
 
     private function agregarProductoACarrito($producto, $cantidad)
     {
         if ($producto->existencia <= 0) {
-            return redirect()->route("vender.index")
-                ->with([
-                    "mensaje" => "No hay existencias del producto",
-                    "tipo" => "danger"
-                ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No hay existencias del producto',
+            ]);
+        }else{
+
+            $productos = $this->obtenerProductos();
+            $posibleIndice = $this->buscarIndiceDeProducto($producto->codigo_barras, $productos);
+    
+            if ($posibleIndice === -1) {
+                if ($cantidad <= $producto->existencia) {
+                    $producto->cantidad = $cantidad;
+                    $producto->precio_total = self::redondearAl100($producto->cantidad * $producto->precio_venta);
+                    array_unshift($productos, $producto);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'No se pueden agregar más productos de este tipo, se quedarían sin existencia',
+                    ]);
+                }
+            } else {
+                if ($productos[$posibleIndice]->cantidad + $cantidad > $producto->existencia) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'No se pueden agregar más productos de este tipo, se quedarían sin existencia',
+                    ]);
+                }
+                $productos[$posibleIndice]->cantidad += $cantidad;
+                $productos[$posibleIndice]->precio_total =  self::redondearAl100($productos[$posibleIndice]->cantidad * $productos[$posibleIndice]->precio_venta);
+            }
+            $this->guardarProductos($productos);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Producto agregado a la venta',
+            ]);
         }
 
-        $productos = $this->obtenerProductos();
-        $posibleIndice = $this->buscarIndiceDeProducto($producto->codigo_barras, $productos);
-        // Es decir, producto no fue encontrado
-        if ($posibleIndice === -1) {
-            if ($cantidad <= $producto->existencia) {
-                $producto->cantidad = $cantidad;
-                $producto->precio_total = self::redondearAl100($producto->cantidad * $producto->precio_venta);
-                array_unshift($productos, $producto);
-            }else{
-                return redirect()->route("vender.index")
-                ->with([
-                    "mensaje" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
-                    "tipo" => "danger"
-                ]);
-            }
-        } else {
-            if ($productos[$posibleIndice]->cantidad + $cantidad > $producto->existencia) {
-                return redirect()->route("vender.index")
-                    ->with([
-                        "mensaje" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
-                        "tipo" => "danger"
-                    ]);
-            }
-            $productos[$posibleIndice]->cantidad += $cantidad;
-            $productos[$posibleIndice]->precio_total =  self::redondearAl100($productos[$posibleIndice]->cantidad * $productos[$posibleIndice]->precio_venta);
-        }
-        $this->guardarProductos($productos);
     }
 
     function redondearAl100($numero) {
@@ -192,26 +200,6 @@ class VenderController extends Controller
         return -1;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $total = 0;
-        foreach ($this->obtenerProductos() as $producto) {
-            $total += self::redondearAl100($producto->cantidad * $producto->precio_venta);
-        }
-
-        return view("vender.vender",
-            [
-                "total" => $total,
-                "clientes" => Cliente::all(),
-            ]);
-    }
-
-
     public function actualizarProductoDeVenta(Request $request)
     {
         $codigo = $request->post("codigo");
@@ -221,11 +209,10 @@ class VenderController extends Controller
         $productos = $this->obtenerProductos();
         $producto = Producto::where("codigo_barras", "=", $codigo)->first();
 
-        if ($productos[$indice]->cantidad + $cantidad > $producto->existencia) {
-            return redirect()->route("vender.index")
-                ->with([
-                    "mensaje" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
-                    "tipo" => "danger"
+        if ($cantidad > $producto->existencia) {
+            return response()->json([
+                    "message" => "No se pueden agregar más productos de este tipo, se quedarían sin existencia",
+                    "status" => "error"
                 ]);
         }
 
@@ -236,10 +223,30 @@ class VenderController extends Controller
 
         $this->guardarProductos($productos);
 
-        return redirect()->route("vender.index")
-        ->with([
-            "mensaje" => "Cantidad Actualizada correctamente",
-            "tipo" => "success"
+        return response()->json([
+            "message" => "Cantidad Actualizada correctamente",
+            "status" => "success"
+        ]);
+    }
+
+
+    public function index()
+    {
+        return view("vender.vender",[
+            "clientes" => Cliente::all(),
+        ]);
+    }
+
+    public function obtenerProductosCarritoJson()
+    {
+        $total = 0;
+        foreach ($this->obtenerProductos() as $producto) {
+            $total += self::redondearAl100($producto->cantidad * $producto->precio_venta);
+        }
+
+        return response()->json([
+            'total' => $total,
+            'productosCarrito' => $this->obtenerProductos() ,
         ]);
     }
 }
