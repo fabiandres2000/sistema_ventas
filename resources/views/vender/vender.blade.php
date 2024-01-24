@@ -178,7 +178,7 @@
                         <div class="col-lg-12">
                             <div class="text-right">
                                 <button onclick="terminarVenta()" type="button" class="btn btn-success">Terminar venta</button>
-                                <a style="color: white" class="btn btn-danger" data-dismiss="modal">Cerrar</a>
+                                <a onclick="cerrarModalTerminarVenta()" style="color: white" class="btn btn-danger" data-dismiss="modal">Cerrar</a>
                             </div>
                         </div>
                     </div>
@@ -646,7 +646,8 @@
         document.addEventListener('keydown', (event) => {
             var keyValue = event.key;
             if(keyValue == "Shift"){
-                $('#modalConfirmarCompra').modal("show")
+                $('#modalConfirmarCompra').modal("show");
+                $("#total_dinero").val("").focus();
             }
         }, false);
 
@@ -666,6 +667,13 @@
         }
 
         $('#obtenerPesoBoton').click(obtenerPeso);
+
+        function cerrarModalTerminarVenta(){
+            setTimeout(() => {
+                $("#codigo").val("").focus();
+            }, 500);
+           
+        }
 
     </script>
 @endsection
