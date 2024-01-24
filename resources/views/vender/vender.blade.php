@@ -343,7 +343,6 @@
                     url: '/verificarUnidadProducto?codigo='+codigo,
                     type: 'GET',
                     success: function(response) {
-                        debugger
                         if(response.unidad_medida != "Libras" && response.unidad_medida != "Kilos"){
                             agregarProductoVenta();
                         }else{
@@ -461,6 +460,15 @@
 
         $(document).ready(function() {
             mapearTablaProductos();
+
+            $('form input').keypress(function(event) {
+                if (event.which === 13) {
+                    var formId = $(this).closest('form').attr('id');
+                    if(formId == "terminarCancelarVenta"){
+                        terminarVenta();
+                    }
+                }
+            });
         });
 
         function mapearTablaProductos(){
