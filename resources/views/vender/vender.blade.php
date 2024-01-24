@@ -178,7 +178,7 @@
                         <div class="col-lg-12">
                             <div class="text-right">
                                 <button onclick="terminarVenta()" type="button" class="btn btn-success">Terminar venta</button>
-                                <a style="color: white" class="btn btn-danger" data-dismiss="modal">Cerrar</a>
+                                <a onclick="cerrarModalTerminarVenta()" style="color: white" class="btn btn-danger" data-dismiss="modal">Cerrar</a>
                             </div>
                         </div>
                     </div>
@@ -343,7 +343,6 @@
                     url: '/verificarUnidadProducto?codigo='+codigo,
                     type: 'GET',
                     success: function(response) {
-                        debugger
                         if(response.unidad_medida != "Libras" && response.unidad_medida != "Kilos"){
                             agregarProductoVenta();
                         }else{
@@ -461,6 +460,15 @@
 
         $(document).ready(function() {
             mapearTablaProductos();
+
+            $('form input').keypress(function(event) {
+                if (event.which === 13) {
+                    var formId = $(this).closest('form').attr('id');
+                    if(formId == "terminarCancelarVenta"){
+                        terminarVenta();
+                    }
+                }
+            });
         });
 
         function mapearTablaProductos(){
@@ -638,7 +646,8 @@
         document.addEventListener('keydown', (event) => {
             var keyValue = event.key;
             if(keyValue == "Shift"){
-                $('#modalConfirmarCompra').modal("show")
+                $('#modalConfirmarCompra').modal("show");
+                $("#total_dinero").val("").focus();
             }
         }, false);
 
@@ -658,6 +667,13 @@
         }
 
         $('#obtenerPesoBoton').click(obtenerPeso);
+
+        function cerrarModalTerminarVenta(){
+            setTimeout(() => {
+                $("#codigo").val("").focus();
+            }, 500);
+           
+        }
 
     </script>
 @endsection
