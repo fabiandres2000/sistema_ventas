@@ -663,10 +663,15 @@
 
         document.addEventListener('keydown', (event) => {
             var keyValue = event.key;
-            if(keyValue == "Shift"){
+            if(keyValue === "Shift"){
                 $('#modalConfirmarCompra').modal("show");
                 $("#total_dinero").val("").focus();
             }
+
+            if (event.key === 'F8') {
+                obtenerPeso();
+            }
+
         }, false);
 
         function obtenerPeso() {
