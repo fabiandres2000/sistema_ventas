@@ -493,8 +493,7 @@
                             '<td style="text-align: center !important;">';
 
                         if (producto.unidad_medida == "Unidades") {
-                            row += '<form style="display: flex; align-items: center; justify-content: space-around;" id="form_editar_'+index+'" method="post">' +
-                                '@method("post")' +
+                            row += '<form style="display: flex; align-items: center; justify-content: space-around;" onsubmit="return pruebaActualizar('+index+')" id="form_editar_'+index+'" >' +
                                 '@csrf' +
                                 '<input min="1" autocomplete="off" style="width: 70px; font-size: 18px" class="form-control" name="cantidad" type="number" value="' + producto.cantidad + '">' +
                                 '<strong> ' + (producto.unidad_medida == "Kilos" ? "Kg" : (producto.unidad_medida == "Libras" ? "Lb" : "Und")) + '</strong>' +
@@ -540,6 +539,25 @@
                     }
                 }
             });
+        }
+
+        function pruebaActualizar(index){
+            $.ajax({
+                url: '/actualizarProductoDeVenta',
+                type: 'POST',
+                data: $('#form_editar_'+index).serialize(), 
+                success: function(response) {
+                    $("#codigo").val("").focus();
+                    if(response.status != "error"){
+                        mostrarNotificacion(response.message, response.status);
+                        mapearTablaProductos();
+                    }else{
+                        mostrarNotificacion(response.message, response.status);
+                        mapearTablaProductos();
+                    }
+                }
+            });
+            return false;
         }
 
         function calcularCambio(element){
@@ -645,10 +663,15 @@
 
         document.addEventListener('keydown', (event) => {
             var keyValue = event.key;
-            if(keyValue == "Shift"){
+            if(keyValue === "Shift"){
                 $('#modalConfirmarCompra').modal("show");
                 $("#total_dinero").val("").focus();
             }
+
+            if (event.key === 'F8') {
+                obtenerPeso();
+            }
+
         }, false);
 
         function obtenerPeso() {
