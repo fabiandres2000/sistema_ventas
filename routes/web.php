@@ -56,6 +56,8 @@ Route::middleware("auth")
 
         Route::get("/productos-carrito", "VenderController@obtenerProductosCarritoJson")->name("vender.obtenerProductosCarritoJson");
 
+        Route::get("/venta-por-fecha", "VentasController@ventasPorFecha")->name("ventas.ventasPorFecha");
+
     });
 
 

@@ -7,9 +7,9 @@
             <h1>Detalle de venta #{{$venta->id}}</h1>
             <h1>Cliente: <small>{{$venta->cliente->nombre}}</small></h1>
             @include("notificacion")
-            <a class="btn btn-info" href="{{route("ventas.index")}}">
+            <button class="btn btn-info" onclick="window.history.back()">
                 <i class="fa fa-arrow-left"></i>&nbsp;Volver
-            </a>
+            </button>
             <a class="btn btn-success" href="{{route("ventas.ticket", ["id" => $venta->id])}}">
                 <i class="fa fa-print"></i>&nbsp;Ticket
             </a>

@@ -190,8 +190,14 @@ class VentasController extends Controller
         
         $totalVendido = 0;
         
+        $mes_actual = date('m');
+        $anio_actual = date('Y');
         foreach ($ventasConTotales as $item) {
-            $totalVendido += $item->total_pagar;
+            $mes_factura = explode("-", $item->fecha_venta)[1];
+            $anio_factura = explode("-", $item->fecha_venta)[0];
+            if($mes_actual == $mes_factura && $anio_actual == $anio_factura){
+                $totalVendido += $item->total_pagar;
+            }
         }
 
         $fiado = 0;
@@ -310,5 +316,35 @@ class VentasController extends Controller
         $venta->delete();
         return redirect()->route("ventas.index")
             ->with("mensaje", "Venta eliminada");
+    }
+
+    public function ventasPorFecha(Request $request)
+    {
+
+        $fecha1 = $request->input("fecha1");
+        $fecha2 = $request->input("fecha2");
+
+
+        $ventasConTotales = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
+        ->select("ventas.*", "clientes.nombre as cliente")
+        ->whereBetween("ventas.fecha_venta", [$fecha1, $fecha2])
+        ->orderBy("ventas.fecha_venta", "ASC")
+        ->get();
+
+    
+        $totalVendido = 0;
+    
+       
+        
+        foreach ($ventasConTotales as $item) {
+            $mes_factura = explode("-", $item->fecha_venta)[1];
+            $anio_factura = explode("-", $item->fecha_venta)[0];
+            $totalVendido += $item->total_pagar;
+        }
+            
+        return view("ventas.ventas_mes", [
+            "ventas" => $ventasConTotales, 
+            "totalVendido" => $totalVendido,
+        ]);
     }
 }

@@ -15,8 +15,8 @@
                         <div style="width: 100%">
                             <h4><strong>Total Comprado Hoy</strong></h4>
                         </div> 
-                        <h1>$ {{ $totalCompradoHoy }}</h1>
-                        <i style="opacity: .7; font-size: 70px; position: absolute; right: 30px; bottom: 30px" class="fas fa-donate"></i>
+                        <h1>$ {{ number_format($totalCompradoHoy, 2) }}</h1>
+                        <i style="opacity: .5; font-size: 50px; position: absolute; right: 30px; bottom: 30px" class="fas fa-donate"></i>
                     </div>
                 </div>
                 <div style="padding: 20px;" class="col-lg-3">
@@ -24,8 +24,8 @@
                         <div style="width: 100%">
                             <h4><strong>Total Compras</strong></h4>
                         </div> 
-                        <h1>$ {{ $totalComprado }}</h1>
-                        <i style="opacity: .7; font-size: 70px; position: absolute; right: 30px; bottom: 30px" class="fas fa-cash-register"></i>
+                        <h1>$ {{ number_format($totalComprado, 2) }}</h1>
+                        <i style="opacity: .5; font-size: 50px; position: absolute; right: 30px; bottom: 30px" class="fas fa-cash-register"></i>
                     </div>
                 </div>
             </div>

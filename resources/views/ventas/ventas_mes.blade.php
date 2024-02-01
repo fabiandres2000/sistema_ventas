@@ -6,44 +6,37 @@
         <div class="col-lg-12">
             <div class="row">
                 <div style="padding: 20px;" class="col-lg-3">
-                    <div class="card_ventas" style="background-color: rgb(6, 139, 247);">
-                        <div style="width: 100%">
-                            <h3><strong>Total Vendido Hoy</strong></h3>
-                        </div> 
-                        <h1>$ {{ number_format($totalVendidoHoy, 2) }}</h1>
-                        <i style="opacity: .5; font-size: 50px; position: absolute; right: 30px; bottom: 30px" class="fas fa-donate"></i>
+                    <h2 style="color: #045f01; font-weight: bold">Fecha de Inicio</h2>
+                   <input style="font-size: 36px;" id="fecha1" type="date" class="form-control">
+                </div>
+                <div style="padding: 20px;" class="col-lg-4">
+                    <h2 style="color: #5f0101; font-weight: bold">Fecha Final</h2>
+                    <div style="display: flex">
+                        <input style="font-size: 36px;" id="fecha2" type="date" class="form-control">
+                        <button onclick="buscarResultados()" class="btn btn-primary" style="font-size: 35px; margin-left: 20px;"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
-                <div class="col-lg-3"></div>
-                <div style="padding: 20px;" class="col-lg-3">
+                <div style="padding: 20px;" class="col-lg-1">
+                </div>
+                <div style="padding: 20px;" class="col-lg-4">
                     <div class="card_ventas" style="background-color: rgb(4, 95, 1);">
                         <div style="width: 100%">
                             <h3><strong>Total Vendido</strong></h3>
                         </div> 
                         <h1>$ {{ number_format($totalVendido, 2) }}</h1>
-                        <i style="opacity: .5; font-size: 50px; position: absolute; right: 30px; bottom: 30px" class="fas fa-cash-register"></i>
+                        <i style="opacity: .7; font-size: 70px; position: absolute; right: 30px; bottom: 30px" class="fas fa-cash-register"></i>
                     </div>
                 </div>
-                <div style="padding: 20px;" class="col-lg-3">
-                    <div class="card_ventas" style="background-color: rgb(247, 94, 6);">
-                        <div style="width: 100%">
-                            <h3><strong>Total fiado</strong></h3>
-                        </div> 
-                        <h1>$ {{ number_format($totalFiado, 2) }}</h1>
-                        <i style="opacity: .5; font-size: 50px; position: absolute; right: 30px; bottom: 30px" class="fas fa-hand-holding-usd"></i>
-                    </div>
-                </div>
-                
             </div>
             <br>
         </div>
         <br>
         <hr>
-        <h3 style="width: 100%; text-align: center"><strong>Listado de ventas</strong></h3>
+        <h2 style="width: 100%; text-align: center"><strong>LISTADO DE VENTAS PERIODO</strong></h2>
         <div class="col-12">
             @include("notificacion")
             <div class="table-responsive">
-                <table id="tabla_ventas" class="table table-bordered">
+                <table id="tabla_ventas_2" class="table table-bordered">
                     <thead style="background-color: #91baee">
                         <tr>
                             <th>Fecha</th>
@@ -83,8 +76,9 @@
             </div>
         </div>
     </div>
-    <script>
-        $('#tabla_ventas').DataTable({
+    <script>        
+        $('#tabla_ventas_2').DataTable({
+            "pageLength": 100,
             language: {
                 "decimal": "",
                 "emptyTable": "No hay información",
@@ -116,6 +110,28 @@
                     alert(response.mensaje);
                 }
             });
+        }
+
+        $(document).ready(function() {
+            var fechaActual = new Date();
+            var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+            
+            var urlParams = new URLSearchParams(window.location.search);
+
+            var fecha1Param = urlParams.get('fecha1');
+            
+            var fecha2Param = urlParams.get('fecha2');
+
+            $('#fecha1').val(fecha1Param);
+            $('#fecha2').val(fecha2Param);
+            
+        });
+
+        function buscarResultados(){
+            var fecha1 = document.getElementById("fecha1").value;
+            var fecha2 = document.getElementById("fecha2").value;
+
+            location.href ="venta-por-fecha?fecha1="+fecha1+"&fecha2="+fecha2;
         }
     </script>
 @endsection
