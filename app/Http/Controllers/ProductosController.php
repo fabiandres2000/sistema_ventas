@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use DB;
 
+use PDF;
+
 class ProductosController extends Controller
 {
     /**
@@ -156,4 +158,21 @@ class ProductosController extends Controller
     public function alert(){
         return view("productos.productos_alert", ["productos" =>  Producto::where('existencia', '<', 10)->get()]);
     }
+
+    public function generarPDF()
+    {
+        $productos = DB::connection('mysql')->table('productos')->get();
+
+        $total_mercancia = 0;
+        foreach ($productos as $key) {
+            $total_mercancia += ($key->precio_venta * $key->existencia);
+            $key->total = ($key->precio_venta * $key->existencia);
+        }
+
+        $pdf = PDF::loadView('pdf_productos', ["productos" => $productos, "total" => $total_mercancia]);
+
+        return $pdf->download('inventario de productos.pdf');
+    }
+
+    //"php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
 }

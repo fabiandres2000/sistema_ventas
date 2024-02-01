@@ -8,7 +8,7 @@
                 <div class="col-lg-3"><h1>Productos <i class="fa fa-box"></i></h1></div>
                 <div class="col-lg-7 text-right"><a style="font-size: 20px" href="{{route("productos.create")}}" class="btn btn-success mb-2">Registrar Producto</a></div>
                 <div class="col-lg-2 text-right">
-                    <button style="font-size: 20px" class="btn btn-primary mb-2" id="pdf">Exportar a PDF</button>
+                    <a href="/generar-pdf" target="_blank" style="font-size: 20px" class="btn btn-primary mb-2" id="pdf">Exportar a PDF</a>
                 </div>
             </div>
             
@@ -119,8 +119,6 @@
 
         $(document).ready(function () {
             var table = $('#tabla_productos').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['pdf'],
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
@@ -141,10 +139,6 @@
                         "previous": "Anterior"
                     }
                 }
-            });
-
-            $('#pdf').on('click', function () {
-                table.button('0').trigger();
             });
         });
 
