@@ -8,6 +8,8 @@ use DB;
 
 use PDF;
 
+use GuzzleHttp\Client;
+
 class ProductosController extends Controller
 {
     /**
@@ -155,7 +157,29 @@ class ProductosController extends Controller
             'codigo_barras' => $codigo_nuevo
         ]);
 
+        self::modificarCodigoProductoNube($codigo_anterior, $codigo_nuevo);
         return redirect()->route("productos.index")->with("mensaje", "Código de barras actualizado");
+    }
+
+    public function modificarCodigoProductoNube($codigo_anterior, $codigo_nuevo){
+        if (checkdnsrr('example.com', 'A')) {
+            $client = new Client();
+
+            $url = 'https://mitienda247.000webhostapp.com/actualizar_producto.php';
+
+            $data = [
+                'codigo_anterior' => $codigo_anterior,
+                'codigo_nuevo' => $codigo_nuevo,
+            ];
+
+            $response = $client->post($url, [
+                'form_params' => $data
+            ]);
+            
+            $body = $response->getBody();
+
+            return $body;
+        }
     }
 
     public function verificarUnidadProducto(Request $request){
