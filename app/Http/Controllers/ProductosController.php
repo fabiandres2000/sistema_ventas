@@ -139,6 +139,25 @@ class ProductosController extends Controller
         return redirect()->route("productos.index")->with("mensaje", "Producto actualizado");
     }
 
+    public function modificarCodigoProducto(Request $request){
+        $codigo_anterior = $request->input('codigo_anterior');
+        $codigo_nuevo = $request->input('codigo_nuevo');
+
+        DB::connection('mysql')->table('productos')
+        ->where('codigo_barras', $codigo_anterior)
+        ->update([
+            'codigo_barras' => $codigo_nuevo
+        ]);
+
+        DB::connection('mysql')->table('productos_vendidos')
+        ->where('codigo_barras', $codigo_anterior)
+        ->update([
+            'codigo_barras' => $codigo_nuevo
+        ]);
+
+        return redirect()->route("productos.index")->with("mensaje", "Código de barras actualizado");
+    }
+
     public function verificarUnidadProducto(Request $request){
         $codigo = $request->input('codigo');
 
@@ -174,5 +193,4 @@ class ProductosController extends Controller
         return $pdf->download('inventario de productos.pdf');
     }
 
-    //"php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
 }

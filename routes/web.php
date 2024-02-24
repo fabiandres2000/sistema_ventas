@@ -42,7 +42,8 @@ Route::middleware("auth")
         Route::post("/terminarOCancelarVenta", "VenderController@terminarOCancelarVenta")->name("terminarOCancelarVenta");
         Route::post("/modificarInventarioProducto", "ProductosController@modificarInventarioProducto")->name("modificarInventarioProducto");
         Route::get("/verificarUnidadProducto", "ProductosController@verificarUnidadProducto")->name("verificarUnidadProducto");
-    
+        Route::post("/modificarCodigoProducto", "ProductosController@modificarCodigoProducto")->name("modificarCodigoProducto");
+
         Route::get('/leer-peso', 'BalanzaController@leerPeso');
         Route::get('/imprimir-ticket', 'VentasController@ImprimirTicket');
         Route::get("/productos-alert", "ProductosController@alert")->name("productos.alert");
@@ -60,7 +61,8 @@ Route::middleware("auth")
 
         Route::get("/generar-pdf", "ProductosController@generarPDF")->name("generarPDF");
 
-    });
+    }
+);
 
 
 Route::get("/productos-categoria", "ProductosController@productosCategoria")->name("productosCategoria");

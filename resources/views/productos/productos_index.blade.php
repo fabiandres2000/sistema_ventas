@@ -33,9 +33,9 @@
                     @foreach($productos as $producto)
                         <tr>
                             <td style="text-align: center">
-                                <img style="height: 70px" src="/imagenes_productos/{{$producto->imagen}}" alt="">
+                                <img style="height: 70px" src="data:image/jpeg;base64,{{$producto->imagen}}" alt="">
                             </td>
-                            <td>{{$producto->codigo_barras}}</td>
+                            <td>{{$producto->codigo_barras}} <button onclick="setCodigoBarras('{{$producto->codigo_barras}}')" data-toggle="modal" data-target="#modalEditarCodigo" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button></td>
                             <td>{{$producto->descripcion}}</td>
                             <td>{{$producto->precio_compra}}</td>
                             <td>{{$producto->precio_venta}}</td>
@@ -66,6 +66,43 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalEditarCodigo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Codigo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route("modificarCodigoProducto")}}" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Codigo de barras anterior</label>
+                                <input required id="codigo_anterior" name="codigo_anterior" style="font-size: 20px" class="form-control" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: 20px" for="">Codigo barra nuevo</label>
+                                <input required id="codigo_nuevo" name="codigo_nuevo" style="font-size: 20px" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-lg-12">
+                            <div class="text-center">
+                                <button style="font-size: 20px"  type="submit" class="btn btn-success">Guardar datos</button>
+                                <a style="font-size: 20px; color: white" class="btn btn-danger" data-dismiss="modal">Cerrar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <div class="modal" id="modalInventario" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-xl" role="document">
@@ -151,5 +188,9 @@
             document.getElementById("existencia_producto").value = existencia;
             document.getElementById("codigo_producto").value = item;
         }
+
+        function setCodigoBarras(codigo) {
+            document.getElementById("codigo_anterior").value = codigo;
+        }        
     </script>
 @endsection
