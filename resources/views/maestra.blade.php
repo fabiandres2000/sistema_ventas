@@ -277,7 +277,7 @@
     });
 
     obtenerDomiciliosP();
-    setInterval(obtenerDomiciliosP, 30000);
+    setInterval(obtenerDomiciliosP, 10000);
 
     function obtenerDomiciliosP(){
         vueltas += 1;
@@ -286,7 +286,6 @@
             type: 'GET',
             success: function(response) {
                 response = JSON.parse(response);
-                debugger
                 if(vueltas > 1){
                     if(response.length > numero_anterior){
                         var audio = new Audio('/sounds/sound.mp3');
