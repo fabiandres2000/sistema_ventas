@@ -19,17 +19,8 @@
                         <th>Opciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                @foreach($domicilios as $domicilio)
-                    <tr>
-                        <td>{{$domicilio["nombre"]}}</td>
-                        <th>{{$domicilio["direccion"]}}</th>
-                        <td>${{number_format($domicilio["total_pagar"], 2)}}</td>
-                        <td>{{$domicilio["fecha_domi"]}}</td>
-                        <td><span style="padding: 5px; border-radius: 6px; background-color: orange">{{$domicilio["estado"]}}</span></td>
-                        <td><button onclick="obtenerInfoPedido(<?php echo $domicilio['id'] ?>)" data-toggle="modal" data-target="#exampleModal" class="btn btn-success">Despachar</button></td>
-                    </tr>
-                @endforeach
+                <tbody id="tabla_domicilios">
+               
                 </tbody>
             </table>
             <br><br><br>
@@ -111,6 +102,34 @@
   </div>
 
   <script>
+    function obtenerDomicilios(){
+        $.ajax({
+            url: 'https://mitienda247.000webhostapp.com/ver_domicilios.php',
+            type: 'GET',
+            success: function(response) {
+                response = JSON.parse(response);
+                var div = "";
+                response.forEach(element => {
+                    div += "<tr>";
+                    div += "<td>"+element.nombre+"</td>";
+                    div += "<th>"+element.direccion+"</th>";
+                    div += "<td>"+element.total_pagar+"</td>";
+                    div += "<td>"+element.fecha_domi+"</td>";
+                    div += "<td><span style='padding: 5px; border-radius: 6px; background-color: orange'>"+element.estado+"</span></td>";
+                    div += "<td><button onclick='obtenerInfoPedido("+element.id+")' data-toggle='modal' data-target='#exampleModal' class='btn btn-success'>Despachar</button></td>";
+                    div += "</tr>";
+                });
+
+                document.getElementById("tabla_domicilios").innerHTML = div;
+            }
+        });
+        return false;
+    }
+
+    obtenerDomicilios();
+
+    setInterval(obtenerDomicilios, 30000);
+
     var total_pagar = 0;
     var productos = [];
     var id_pedido_sel = "";
@@ -172,41 +191,50 @@
         }
     }
 
-
     function guardarVenta(){
-        var datos = {
-            total_pagar: total_pagar,
-            total_dinero: document.getElementById("total_dinero").value,
-            total_fiado: document.getElementById("fiado").value,
-            total_vueltos: document.getElementById("vueltos").value,
-            imprimir_factura: document.getElementById("imprimir_factura").value,
-            celular_cliente: document.getElementById("celular_cliente").value,
-            nombre_cliente: document.getElementById("nombre_cliente").value,
-            direccion_cliente: document.getElementById("direccion_cliente").value,
-            productos: productos,
-            id_pedido:  id_pedido_sel
+        if(document.getElementById("total_dinero").value != ""){
+            var datos = {
+                total_pagar: total_pagar,
+                total_dinero: document.getElementById("total_dinero").value,
+                total_fiado: document.getElementById("fiado").value,
+                total_vueltos: document.getElementById("vueltos").value,
+                imprimir_factura: document.getElementById("imprimir_factura").value,
+                celular_cliente: document.getElementById("celular_cliente").value,
+                nombre_cliente: document.getElementById("nombre_cliente").value,
+                direccion_cliente: document.getElementById("direccion_cliente").value,
+                productos: productos,
+                id_pedido:  id_pedido_sel
+            }
+
+            $.ajax({
+                url: "/terminarVentaDomicilio",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(datos),
+                success: function(respuesta) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Venta realizada correctamente",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                },
+            });
+
+        }else{
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Ingrese la cantidad de dinero que el cliente pago en en campo (total dinero)",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
-
-        $.ajax({
-            url: "/terminarVentaDomicilio",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(datos),
-            success: function(respuesta) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Venta realizada correctamente",
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            
-                setTimeout(() => {
-                    location.reload();
-                }, 2000);
-            },
-        });
-
     }
   </script>
 @endsection

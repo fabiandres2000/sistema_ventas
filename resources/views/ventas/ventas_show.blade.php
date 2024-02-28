@@ -31,7 +31,7 @@
                         <td>{{$producto->descripcion}}</td>
                         <td>{{$producto->codigo_barras}}</td>
                         <td>${{number_format($producto->precio, 2)}}</td>
-                        <td>{{$producto->cantidad}}</td>
+                        <td>{{$producto->cantidad}} <strong>{{$producto->unidad}}</strong> </td>
                         <td>${{round(($producto->cantidad * $producto->precio) / 100) * 100}}</td>
                     </tr>
                 @endforeach

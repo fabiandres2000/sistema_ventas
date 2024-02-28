@@ -20,21 +20,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 class DomiciliosController extends Controller
 {
     public function obtenerDomicilios(){
-        if (checkdnsrr('example.com', 'A')) {
-            $client = new Client();
-
-            $url = 'https://mitienda247.000webhostapp.com/ver_domicilios.php';
-
-            $response = $client->get($url);
-            
-            $body = $response->getBody();
-
-            $data = json_decode($body, true);
-
-            return view("ventas.domicilios", ["domicilios" => $data, "estado" => 1]);
-        }else{
-            return view("ventas.domicilios", ["domicilios" => [], "estado" => 0]);
-        }
+        return view("ventas.domicilios");
     }
 
 
