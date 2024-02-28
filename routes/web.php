@@ -60,7 +60,8 @@ Route::middleware("auth")
         Route::get("/venta-por-fecha", "VentasController@ventasPorFecha")->name("ventas.ventasPorFecha");
 
         Route::get("/generar-pdf", "ProductosController@generarPDF")->name("generarPDF");
-
+        Route::get("/domicilios", "DomiciliosController@obtenerDomicilios")->name("ventas.domicilios");
+        Route::post("/terminarVentaDomicilio", "DomiciliosController@terminarVentaDomicilio")->name("terminarVentaDomicilio");
     }
 );
 

@@ -227,6 +227,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route("ventas.ventasPorFecha", ['fecha1' => date('Y-m-').'01', 'fecha2' => date('Y-m-d') ])}}">Ventas por mes &nbsp;<i class="fas fa-money-bill-alt"></i></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route("ventas.domicilios")}}">Domicilios &nbsp;<i class="fas fa-truck"></i></a>
+                </li>
             @endguest
         </ul>
         <ul class="navbar-nav ml-auto">

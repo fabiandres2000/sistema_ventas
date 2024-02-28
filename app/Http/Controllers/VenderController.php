@@ -9,6 +9,7 @@ use App\Venta;
 use Illuminate\Http\Request;
 use App\Http\Controllers\VentasController;
 use DB;
+use App\Http\Controllers\DomiciliosController;
 
 class VenderController extends Controller
 {
@@ -40,6 +41,7 @@ class VenderController extends Controller
         $idVenta = $venta->id;
         $productos = $this->obtenerProductos();
 
+        $lista_productos = [];
         foreach ($productos as $producto) {
             $productoVendido = new ProductoVendido();
             $productoVendido->fill([
@@ -55,11 +57,20 @@ class VenderController extends Controller
             $productoActualizado = Producto::find($producto->id);
             $productoActualizado->existencia -= $productoVendido->cantidad;
             $productoActualizado->saveOrFail();
+
+
+            $lista_productos[] = [
+                "codigo_barras" => $productoActualizado->codigo_barras,
+                "existencia" => $productoActualizado->existencia
+            ];
         }
 
         $objeto = new VentasController();
         $myVariable = $objeto->ticket($idVenta, $imprimir_factura);
 
+        $actualizar = new DomiciliosController();
+        $actualizar->actualizarCantidadesProductos($lista_productos, null);
+        
         $this->vaciarProductos();
 
         return response()->json([
