@@ -181,6 +181,20 @@
             justify-content: center;
             align-items: center;
         }
+
+        .bad {
+            width: 27px;
+            height: 29px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 3px;
+            right: 0px;
+        }
     </style>
 </head>
 <body>
@@ -227,8 +241,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route("ventas.ventasPorFecha", ['fecha1' => date('Y-m-').'01', 'fecha2' => date('Y-m-d') ])}}">Ventas por mes &nbsp;<i class="fas fa-money-bill-alt"></i></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" style="position: relative">
                     <a class="nav-link" href="{{route("ventas.domicilios")}}">Domicilios &nbsp;<i class="fas fa-truck"></i></a>
+                    <span id="bad" class="bad">0</span>
                 </li>
             @endguest
         </ul>
@@ -251,7 +266,8 @@
     </div>
 </nav>
 <script type="text/javascript">
-    // Tomado de https://parzibyte.me/blog/2019/06/26/menu-responsivo-bootstrap-4-sin-dependencias/
+    var vueltas = 0;
+    var numero_anterior = 0;
     document.addEventListener("DOMContentLoaded", () => {
         const menu = document.querySelector("#menu"),
             botonMenu = document.querySelector("#botonMenu");
@@ -259,6 +275,33 @@
             botonMenu.addEventListener("click", () => menu.classList.toggle("show"));
         }
     });
+
+    obtenerDomiciliosP();
+    setInterval(obtenerDomiciliosP, 30000);
+
+    function obtenerDomiciliosP(){
+        vueltas += 1;
+        $.ajax({
+            url: 'https://mitienda247.000webhostapp.com/ver_domicilios.php',
+            type: 'GET',
+            success: function(response) {
+                response = JSON.parse(response);
+                debugger
+                if(vueltas > 1){
+                    if(response.length > numero_anterior){
+                        var audio = new Audio('/sounds/sound.mp3');
+                        audio.play();
+                        numero_anterior = response.length;
+                    }
+                }else{
+                    numero_anterior = response.length;
+                }
+                document.getElementById("bad").innerHTML = response.length;
+            }
+        });
+        return false;
+    }
+
 </script>
 <main class="container-fluid">
     @yield("contenido")
