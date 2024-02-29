@@ -234,9 +234,15 @@ class VentasController extends Controller
         $totalVendidoHoy = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
         ->where("ventas.fecha_venta", $hoy)
         ->sum("ventas.total_pagar");
+
+        $primeros100 = Venta::join("clientes", "clientes.id", "ventas.id_cliente")
+            ->select("ventas.*", "clientes.nombre as cliente")
+            ->orderBy("ventas.created_at", "DESC")
+            ->limit(100)
+            ->get();
             
         return view("ventas.ventas_index", [
-            "ventas" => $ventasConTotales, 
+            "ventas" => $primeros100, 
             "totalVendido" => $totalVendido,
             "totalFiado" => $totalFiado,
             "totalVendidoHoy" => $totalVendidoHoy
