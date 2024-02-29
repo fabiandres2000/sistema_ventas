@@ -128,7 +128,7 @@
 
     obtenerDomicilios();
 
-    setInterval(obtenerDomicilios, 30000);
+    setInterval(obtenerDomicilios, 10000);
 
     var total_pagar = 0;
     var productos = [];
