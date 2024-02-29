@@ -104,7 +104,7 @@
   <script>
     function obtenerDomicilios(){
         $.ajax({
-            url: 'https://mitienda247.000webhostapp.com/ver_domicilios.php',
+            url: 'https://provisiones-carlosandres.shop/ver_domicilios.php',
             type: 'GET',
             success: function(response) {
                 response = JSON.parse(response);
@@ -136,7 +136,7 @@
     function obtenerInfoPedido(id_pedido){
         id_pedido_sel = id_pedido;
         $.ajax({
-            url: 'https://mitienda247.000webhostapp.com/info_pedido.php?id_pedido='+id_pedido,
+            url: 'https://provisiones-carlosandres.shop/info_pedido.php?id_pedido='+id_pedido,
             type: 'GET',
             success: function(response) {
                 response = JSON.parse(response);

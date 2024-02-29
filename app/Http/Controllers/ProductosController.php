@@ -38,8 +38,7 @@ class ProductosController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
             'codigo_barras' => 'required',
             'descripcion' => 'required',
@@ -62,8 +61,30 @@ class ProductosController extends Controller
         $producto->imagen = $imageName;
         $producto->saveOrFail();
 
+        $this->registrarProductoNube($request->except('imagen'));
         return redirect()->route("productos.create");
     }
+
+    public function registrarProductoNube($producto){
+        if (checkdnsrr('example.com', 'A')) {
+            $client = new Client();
+
+            $url = 'https://provisiones-carlosandres.shop/registrar_producto.php';
+
+            $data = [
+                'producto' => json_encode($producto),
+            ];
+
+            $response = $client->post($url, [
+                'form_params' => $data
+            ]);
+            
+            $response = $response->getBody();
+            $body = json_decode($response, true);
+            return $body;
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -138,7 +159,31 @@ class ProductosController extends Controller
             'precio_venta' => $precio_venta
         ]);
 
+        $this->modificarInventarioProductoNube($codigo_producto, $nueva_cantidad_disponible, $precio_compra, $precio_venta);
         return redirect()->route("productos.index")->with("mensaje", "Producto actualizado");
+    }
+
+    public function modificarInventarioProductoNube($codigo_producto, $nueva_cantidad_disponible, $precio_compra, $precio_venta){
+        if (checkdnsrr('example.com', 'A')) {
+            $client = new Client();
+
+            $url = 'https://provisiones-carlosandres.shop/modificar_inventario.php';
+
+            $data = [
+                'codigo_producto' => $codigo_producto,
+                'existencia' => $nueva_cantidad_disponible,
+                'precio_compra' => $precio_compra,
+                'precio_venta' => $precio_venta
+            ];
+
+            $response = $client->post($url, [
+                'form_params' => $data
+            ]);
+            
+            $response = $response->getBody();
+            $body = json_decode($response, true);
+            return $body;
+        }
     }
 
     public function modificarCodigoProducto(Request $request){
@@ -165,7 +210,7 @@ class ProductosController extends Controller
         if (checkdnsrr('example.com', 'A')) {
             $client = new Client();
 
-            $url = 'https://mitienda247.000webhostapp.com/actualizar_producto.php';
+            $url = 'https://provisiones-carlosandres.shop/actualizar_producto.php';
 
             $data = [
                 'codigo_anterior' => $codigo_anterior,

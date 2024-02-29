@@ -113,7 +113,7 @@ class DomiciliosController extends Controller
         if (checkdnsrr('example.com', 'A')) {
             $client = new Client();
 
-            $url = 'https://mitienda247.000webhostapp.com/actualizar_final.php';
+            $url = 'https://provisiones-carlosandres.shop/actualizar_final.php';
 
             $data = [
                 "productos" => json_encode($lista_productos),

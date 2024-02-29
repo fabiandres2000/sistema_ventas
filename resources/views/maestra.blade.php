@@ -282,7 +282,7 @@
     function obtenerDomiciliosP(){
         vueltas += 1;
         $.ajax({
-            url: 'https://mitienda247.000webhostapp.com/ver_domicilios.php',
+            url: 'https://provisiones-carlosandres.shop/ver_domicilios.php',
             type: 'GET',
             success: function(response) {
                 response = JSON.parse(response);
