@@ -100,7 +100,7 @@ class VentasController extends Controller
             $total = 0;
             foreach ($venta->productos as $producto) {
                 $subtotal = $producto->cantidad * $producto->precio;
-                $total += $subtotal;
+                $total = $total + redondearAl100($subtotal);
                 $impresora->setJustification(Printer::JUSTIFY_LEFT);
                 $impresora->text(sprintf("%.2f %s x %s\n", $producto->cantidad, $producto->unidad,  $producto->descripcion));
                 $impresora->setJustification(Printer::JUSTIFY_RIGHT);
@@ -149,7 +149,7 @@ class VentasController extends Controller
         $total = 0;
         foreach ($venta->productos as $producto) {
             $subtotal = $producto->cantidad * $producto->precio;
-            $total += $subtotal;
+            $total = $total + redondearAl100($subtotal);
             $impresora->setJustification(Printer::JUSTIFY_LEFT);
             $impresora->text(sprintf("%.2f %s x %s\n", $producto->cantidad, $producto->unidad,  $producto->descripcion));
             $impresora->setJustification(Printer::JUSTIFY_RIGHT);
