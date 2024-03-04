@@ -90,6 +90,13 @@
                                 </label>
                             </div>
                             <div class="col-lg-2" style="margin-bottom: 20px">
+                                <input required type="radio" id="control_007" name="categoria" value="Fritos">
+                                <label class="lradio" for="control_007">
+                                    <img src="/img/fritos.png" style="width: 60px" alt="">
+                                    <p>Fritos y Jugos</p>
+                                </label>
+                            </div>
+                            <div class="col-lg-2" style="margin-bottom: 20px">
                                 <input required type="radio" id="control_06" name="categoria" value="Otros">
                                 <label class="lradio" for="control_06">
                                     <p>Otros</p>

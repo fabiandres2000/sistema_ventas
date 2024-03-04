@@ -47,25 +47,27 @@ class ProductosController extends Controller
             'precio_venta' => 'required|numeric',
             'existencia' => 'required|numeric',
             'unidad_medida' => 'required',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'imagen' => 'nullable',
         ]);
 
+        $base64Image = "";
         if ($request->hasFile('imagen')) {
-            $imageName = time().'.'.$request->imagen->extension();
-            $request->imagen->move(public_path('imagenes_productos'), $imageName);
+            $filePath = $request->file('imagen')->path();
+            $fileContent = file_get_contents($filePath);
+            $base64Image = base64_encode($fileContent);
         } else {
-            $imageName = null;
+            $base64Image = "";
         }
 
         $producto = new Producto($request->except('imagen'));
-        $producto->imagen = $imageName;
+        $producto->imagen = $base64Image;
         $producto->saveOrFail();
 
-        $this->registrarProductoNube($request->except('imagen'));
+        $this->registrarProductoNube($request->except('imagen'), $producto->imagen);
         return redirect()->route("productos.create");
     }
 
-    public function registrarProductoNube($producto){
+    public function registrarProductoNube($producto, $base64Image){
         if (checkdnsrr('example.com', 'A')) {
             $client = new Client();
 
@@ -73,6 +75,7 @@ class ProductosController extends Controller
 
             $data = [
                 'producto' => json_encode($producto),
+                'imagen' => $base64Image
             ];
 
             $response = $client->post($url, [
@@ -118,8 +121,40 @@ class ProductosController extends Controller
     public function update(Request $request, Producto $producto)
     {
         $producto->fill($request->input());
+        
+        $base64Image = "";
+        if ($request->hasFile('imagen')) {
+            $filePath = $request->file('imagen')->path();
+            $fileContent = file_get_contents($filePath);
+            $base64Image = base64_encode($fileContent);
+        } else {
+            $base64Image = $producto->imagen;
+        }
+
+        $producto->imagen = $base64Image;
         $producto->saveOrFail();
+        $this->actualizarProductoNube($producto);
         return redirect()->route("productos.index")->with("mensaje", "Producto actualizado");
+    }
+
+    public function actualizarProductoNube($producto){
+        if (checkdnsrr('example.com', 'A')) {
+            $client = new Client();
+
+            $url = 'https://provisiones-carlosandres.shop/actualizar_producto_nube.php';
+
+            $data = [
+                'producto' => json_encode($producto),
+            ];
+
+            $response = $client->post($url, [
+                'form_params' => $data
+            ]);
+            
+            $response = $response->getBody();
+            $body = json_decode($response, true);
+            return $body;
+        }
     }
 
     /**
