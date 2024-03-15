@@ -26,6 +26,7 @@ class UserController extends Controller
     public function deudores()
     {
         $resultado = Cliente::join("fiados", "clientes.id", "=", "fiados.id_cliente")
+        ->join("ventas", "ventas.id", "fiados.id_factura")
         ->selectRaw("clientes.*, SUM(fiados.total_fiado) as total_fiado")
         ->groupBy('clientes.id')
         ->get();
@@ -76,6 +77,7 @@ class UserController extends Controller
 
         
         $fiado = Cliente::join("fiados", "clientes.id", "=", "fiados.id_cliente")
+        ->join("ventas", "ventas.id", "fiados.id_factura")
         ->selectRaw("clientes.*, SUM(fiados.total_fiado) as total_fiado")
         ->groupBy('clientes.id')
         ->where("clientes.id", $id_cliente)
@@ -194,6 +196,7 @@ class UserController extends Controller
         $id = $request->input("id_cliente");
 
         $resultado = Cliente::join("fiados", "clientes.id", "=", "fiados.id_cliente")
+        ->join("ventas", "ventas.id", "fiados.id_factura")
         ->selectRaw("clientes.*, SUM(fiados.total_fiado) as total_fiado")
         ->groupBy('clientes.id')
         ->where("clientes.id", $id)
@@ -321,3 +324,5 @@ class UserController extends Controller
         return round($numero / 100) * 100;
     }
 }
+
+//DELETE FROM ventas WHERE id NOT IN (SELECT id_venta FROM productos_vendidos GROUP BY id_venta)
