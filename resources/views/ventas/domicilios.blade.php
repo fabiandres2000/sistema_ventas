@@ -14,6 +14,7 @@
                         <th>Cliente</th>
                         <th>Direccion</th>
                         <th>Total</th>
+                        <th>Vueltos</th>
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th>Opciones</th>
@@ -114,6 +115,7 @@
                     div += "<td>"+element.nombre+"</td>";
                     div += "<th>"+element.direccion+"</th>";
                     div += "<td>"+element.total_pagar+"</td>";
+                    div += "<td>"+element.vueltos_domi+"</td>";
                     div += "<td>"+element.fecha_domi+"</td>";
                     div += "<td><span style='padding: 5px; border-radius: 6px; background-color: orange'>"+element.estado+"</span></td>";
                     div += "<td><button onclick='obtenerInfoPedido("+element.id+")' data-toggle='modal' data-target='#exampleModal' class='btn btn-success'>Despachar</button></td>";
@@ -176,6 +178,17 @@
                 document.getElementById("nombre_cliente").value = response.nombre;
                 document.getElementById("direccion_cliente").value = response.direccion;      
                 document.getElementById("celular_cliente").value = response.celular; 
+                document.getElementById("vueltos").value = response.vueltos_domi;
+                document.getElementById("total_dinero").value = (parseFloat(total_pagar) + parseFloat(response.vueltos_domi));
+                
+                var tf = total_pagar - (parseFloat(total_pagar) + parseFloat(response.vueltos_domi));
+
+                if(tf > 0){
+                    document.getElementById("fiado").value = tf;
+                }else{
+                    document.getElementById("fiado").value = 0;
+                }
+                
             }
         });
         return false;

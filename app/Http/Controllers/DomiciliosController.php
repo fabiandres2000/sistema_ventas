@@ -234,6 +234,9 @@ class DomiciliosController extends Controller
             $impresora->text("SubTotal: $" . self::redondearAl100($total) . "\n");
             $impresora->text("Domicilio: $" . self::redondearAl100(500) . "\n");
             $impresora->text("Total: $" . self::redondearAl100($total+500) . "\n");
+            $impresora->text("\n===============================\n");
+            $impresora->text("Pago: $" . self::redondearAl100($venta->total_dinero) . "\n");
+            $impresora->text("Vueltos: $" . self::redondearAl100($venta->total_vueltos) . "\n");
             $impresora->setJustification(Printer::JUSTIFY_CENTER);
             $impresora->setTextSize(1, 1);
             $impresora->text("Gracias por su compra\n");
